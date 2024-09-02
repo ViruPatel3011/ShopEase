@@ -191,7 +191,6 @@ const filters = [
 ];
 
 function classNames(...classes) {
-  console.log("test")
   return classes.filter(Boolean).join(' ')
 }
 
