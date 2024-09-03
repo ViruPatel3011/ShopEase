@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAllProducts, fetchAllProductsAsync, fetchProductsByFiltersAsync } from "../ProductSlice"
+import { selectAllProducts, selectTotalItems, fetchProductsByFiltersAsync } from "../ProductSlice"
 import {
   Dialog,
   DialogBackdrop,
@@ -17,6 +17,8 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon, StarIcon } from '@heroicons/react/20/solid'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
+import { ITEMS_PER_PAGE } from '../../../app/constant';
+
 
 
 const sortOptions = [
@@ -200,7 +202,8 @@ export default function ProductList() {
   const products = useSelector(selectAllProducts);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
-  // console.log('products', products);
+  const [page, setPage] = useState(1);
+  const totalItems = useSelector(selectTotalItems);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
 
@@ -228,15 +231,34 @@ export default function ProductList() {
   }
 
   const handleSort = (e, option) => {
-    console.log("e:", e);
-    console.log("option:", option);
     const sort = { _sort: option.sort, _order: option.order };
     setSort(sort);
   }
 
+  const handlePage = (page) => {
+    setPage(page);
+  }
+
+  const handlePreviousPage = (page) => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }
+
+  const handleNextPage = (page) => {
+    if (page < (totalItems / ITEMS_PER_PAGE)) {
+      setPage(page + 1);
+    }
+  }
+
   useEffect(() => {
-    dispatch(fetchProductsByFiltersAsync({ filter, sort }))
-  }, [dispatch, filter, sort])
+    const pagination = { _page: page, _per_page: ITEMS_PER_PAGE }
+    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }))
+  }, [dispatch, filter, sort, page])
+
+  useEffect(() => {
+    setPage(1)
+  }, [totalItems, sort])
 
   return (
     <div>
@@ -244,8 +266,7 @@ export default function ProductList() {
         <div className="bg-white">
           <div>
             <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen} handleFilter={handleFilter}></MobileFilter>
-
-            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <main className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-10">
               <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900">All Products</h1>
 
@@ -305,7 +326,7 @@ export default function ProductList() {
                 </h2>
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-                  <DesktopFilter filters={filters}></DesktopFilter>
+                  <DesktopFilter filters={filters} handleFilter={handleFilter}></DesktopFilter>
 
                   {/* Product grid */}
                   <div className="lg:col-span-3">
@@ -313,19 +334,12 @@ export default function ProductList() {
                     <ProductGrid products={products}></ProductGrid>
                   </div>
                   {/* Product Grid end  */}
-
-
                 </div>
               </section>
-
-              <Pagination></Pagination>
-
+              <Pagination handlePage={handlePage} page={page} setPage={setPage} totalItems={totalItems} handleNextPage={handleNextPage} handlePreviousPage={handlePreviousPage}></Pagination>
             </main>
           </div>
         </div>
-
-
-
       </div>
     </div>
 
@@ -362,8 +376,6 @@ function MobileFilter({ setMobileFiltersOpen, mobileFiltersOpen, handleFilter })
 
             {/* Filters */}
             <form className="mt-4 border-t border-gray-200">
-
-
               {filters.map((section) => (
                 <Disclosure key={section.id} as="div" className="border-t border-gray-200 px-4 py-6">
                   <h3 className="-mx-2 -my-3 flow-root">
@@ -407,7 +419,7 @@ function MobileFilter({ setMobileFiltersOpen, mobileFiltersOpen, handleFilter })
   );
 }
 
-function DesktopFilter({ filters }) {
+function DesktopFilter({ filters, handleFilter }) {
   return (
     <>
       {/* Filters */}
@@ -415,7 +427,7 @@ function DesktopFilter({ filters }) {
 
 
         {filters.map((section) => (
-          <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6">
+          <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6 px-4">
             <h3 className="-my-3 flow-root">
               <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
                 <span className="font-medium text-gray-900">{section.name}</span>
@@ -435,6 +447,7 @@ function DesktopFilter({ filters }) {
                       id={`filter-${section.id}-${optionIdx}`}
                       name={`${section.id}[]`}
                       type="checkbox"
+                      onChange={(e => handleFilter(e, section, option))}
                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     />
                     <label htmlFor={`filter-${section.id}-${optionIdx}`} className="ml-3 text-sm text-gray-600">
@@ -451,7 +464,7 @@ function DesktopFilter({ filters }) {
 }
 
 
-function Pagination() {
+function Pagination({ handlePage, page, setPage, totalItems, handlePreviousPage, handleNextPage }) {
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
@@ -471,47 +484,44 @@ function Pagination() {
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">1</span> to <span className="font-medium">10</span> of{' '}
-            <span className="font-medium">97</span> results
+            Showing <span className="font-medium">{(page - 1) * ITEMS_PER_PAGE + 1}</span> to <span className="font-medium">{page * ITEMS_PER_PAGE > totalItems
+              ? totalItems
+              : page * ITEMS_PER_PAGE}</span> of{' '}
+            <span className="font-medium">{totalItems}</span> results
           </p>
         </div>
         <div>
           <nav aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md shadow-sm">
-            <a
-              href="#"
+            <div
+              onClick={() => handlePreviousPage(page)}
               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon aria-hidden="true" className="h-5 w-5" />
-            </a>
+            </div>
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-            <a
-              href="#"
-              aria-current="page"
-              className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              1
-            </a>
-            <a
-              href="#"
-              className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-            >
-              2
-            </a>
-            <a
-              href="#"
-              className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-            >
-              3
-            </a>
+            {Array.from({ length: Math.ceil(totalItems / ITEMS_PER_PAGE) }).map(
+              (el, index) => (
+                <div
+                  onClick={() => handlePage(index + 1)}
+                  aria-current="page"
+                  className={`relative cursor-pointer z-10 inline-flex items-center ${index + 1 === page
+                    ? 'bg-indigo-600 text-white'
+                    : 'text-gray-400'
+                    } px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                >
+                  {index + 1}
+                </div>
+              )
+            )}
 
-            <a
-              href="#"
+            <div
+              onClick={() => handleNextPage(page)}
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
               <span className="sr-only">Next</span>
               <ChevronRightIcon aria-hidden="true" className="h-5 w-5" />
-            </a>
+            </div>
           </nav>
         </div>
       </div>
