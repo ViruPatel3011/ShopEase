@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAllProducts, fetchAllProductsAsync } from "../ProductSlice"
+import { selectAllProducts, fetchAllProductsAsync, fetchProductsByFiltersAsync } from "../ProductSlice"
 import {
   Dialog,
   DialogBackdrop,
@@ -197,21 +197,53 @@ function classNames(...classes) {
 export default function ProductList() {
 
   const dispatch = useDispatch();
-  const products = useSelector(selectAllProducts)
-  console.log('products', products);
+  const products = useSelector(selectAllProducts);
+  const [filter, setFilter] = useState({});
+  const [sort, setSort] = useState({});
+  // console.log('products', products);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+
+
+  const handleFilter = (e, section, option) => {
+    console.log(`${section.id}: ${option.value}`);
+    console.log("event:", e);
+    console.log(e.target.checked)
+    const newFilter = { ...filter };
+    // console.log("newFilter:", newFilter)
+    if (e.target.checked) {
+      if (newFilter[section.id]) {
+        newFilter[section.id].push(option.value)
+      } else {
+        newFilter[section.id] = [option.value]
+      }
+    } else {
+      const index = newFilter[section.id].findIndex(el => el === option.value)
+      newFilter[section.id].splice(index, 1);
+    }
+    console.log({ newFilter });
+
+    setFilter(newFilter);
+
+  }
+
+  const handleSort = (e, option) => {
+    console.log("e:", e);
+    console.log("option:", option);
+    const sort = { _sort: option.sort, _order: option.order };
+    setSort(sort);
+  }
+
   useEffect(() => {
-    dispatch(fetchAllProductsAsync())
-  }, [dispatch])
+    dispatch(fetchProductsByFiltersAsync({ filter, sort }))
+  }, [dispatch, filter, sort])
 
   return (
     <div>
       <div>
-
         <div className="bg-white">
           <div>
-            <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen}></MobileFilter>
+            <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen} handleFilter={handleFilter}></MobileFilter>
 
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
@@ -238,6 +270,7 @@ export default function ProductList() {
                           <MenuItem key={option.name}>
                             <a
                               href={option.href}
+                              onClick={(e) => handleSort(e, option)}
                               className={classNames(
                                 option.current ? 'font-medium text-gray-900' : 'text-gray-500',
                                 'block px-4 py-2 text-sm data-[focus]:bg-gray-100',
@@ -300,7 +333,7 @@ export default function ProductList() {
 }
 
 
-function MobileFilter({ setMobileFiltersOpen, mobileFiltersOpen }) {
+function MobileFilter({ setMobileFiltersOpen, mobileFiltersOpen, handleFilter }) {
   return (
     <>
       {/* Mobile filter dialog */}
@@ -352,6 +385,7 @@ function MobileFilter({ setMobileFiltersOpen, mobileFiltersOpen }) {
                             id={`filter-mobile-${section.id}-${optionIdx}`}
                             name={`${section.id}[]`}
                             type="checkbox"
+                            onChange={(e => handleFilter(e, section, option))}
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                           />
                           <label
