@@ -1,6 +1,8 @@
+const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
 export function fetchAllProducts() {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/products');
+    const response = await fetch(`${baseUrl}/products`);
     const data = await response.json();
     resolve({ data })
   }
@@ -31,17 +33,26 @@ export function fetchProductsByFilters(filter, sort, pagination) {
 
   return new Promise(async (resolve) => {
     //TODO: we will not hard-code server URL here
-    const response = await fetch('http://localhost:8080/products?' + queryString)
+    const response = await fetch(`${baseUrl}/products?` + queryString)
     const data = await response.json()
     resolve({ data })
   }
   );
 }
 
-
-export function fetchCategories(){
+export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/categories');
+    const response = await fetch(`${baseUrl}/products/` + id);
+    const data = await response.json();
+    resolve({ data })
+  }
+  );
+}
+
+
+export function fetchCategories() {
+  return new Promise(async (resolve) => {
+    const response = await fetch(`${baseUrl}/categories`);
     const data = await response.json();
     resolve({ data })
   }
@@ -50,7 +61,7 @@ export function fetchCategories(){
 
 export function fetchBrands() {
   return new Promise(async (resolve) => {
-    const response = await fetch('http://localhost:8080/brands');
+    const response = await fetch(`${baseUrl}/brands`);
     const data = await response.json();
     resolve({ data })
   }
