@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+import { baseUrl } from "../../app/constant";
 
 export function fetchAllProducts() {
   return new Promise(async (resolve) => {

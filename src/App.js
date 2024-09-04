@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
@@ -10,12 +10,17 @@ import {
 import CartPage from './pages/CartPage';
 import Checkout from './pages/CheckOut';
 import ProductDetailPage from './pages/ProductDetailPage';
+import Protected from './features/auth/components/Protected';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectLoggedInUser } from './features/auth/authSlice';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element:
-      <Home></Home>
+      <Protected>
+        <Home></Home>
+      </Protected>
     ,
   },
   {
@@ -28,18 +33,26 @@ const router = createBrowserRouter([
   },
   {
     path: "/cart",
-    element: <CartPage></CartPage>,
+    element:
+      <Protected>
+        <CartPage></CartPage>,
+      </Protected>
   },
   {
     path: "/checkout",
-    element: <Checkout></Checkout>,
+    element:
+      <Protected>
+        <Checkout></Checkout>,
+      </Protected>
   },
   {
     path: "/product-detail/:id",
-    element: <ProductDetailPage></ProductDetailPage>,
+    element:
+      <Protected>
+        <ProductDetailPage></ProductDetailPage>,
+      </Protected>
   },
 ]);
-
 
 function App() {
   return (
