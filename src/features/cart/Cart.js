@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { selectItems } from './cartSlice';
+import { selectItems, updateCartAsync, deleteCartAsync } from './cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 
 export function Cart() {
-
+  const dispatch=useDispatch();
   const cartItems = useSelector(selectItems);
   const totalAmount = cartItems.reduce((amount, item) => item.price * item.quantity + amount, 0)
   const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
+
+  const handleRemove=(e,id)=>{
+    dispatch(deleteCartAsync(id));
+  }
+
+  const handleQuantity=(e,cart)=>{
+    dispatch(updateCartAsync({...cart,quantity:+e.target.value}));
+  }
 
   return (
     <>
@@ -47,14 +55,17 @@ export function Cart() {
                           <label htmlFor="quantity" className="inline text-sm font-medium leading-6 text-gray-500 mr-3" >
                             Qty
                           </label>
-                          <select >
+                          <select onChange={(e)=>handleQuantity(e,cart)} value={cart.quantity}>
                             <option value="1">1</option>
                             <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                           </select>
                         </div>
 
                         <div className="flex">
-                          <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                          <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={(e)=>handleRemove(e,cart.id)}>
                             Remove
                           </button>
                         </div>
