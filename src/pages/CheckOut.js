@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../features/cart/cartSlice';
 import { useForm } from 'react-hook-form';
 import { deleteCartAsync, updateCartAsync } from '../features/cart/cartSlice';
-import { selectLoggedInUser, updateUserAsync } from "../features/auth/authSlice";
+import { updateUserAsync } from "../features/auth/authSlice";
+import { selectUserInfo } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/orders/orderSlice';
 
 
 function Checkout() {
     const dispatch = useDispatch();
-    const user = useSelector(selectLoggedInUser);
+    const user = useSelector(selectUserInfo);
     const {
         register,
         handleSubmit,
@@ -191,7 +192,7 @@ function Checkout() {
                                             </label>
                                             <div className="mt-2">
                                                 <input
-                                                    id="pinCode"
+                                                    id="region"
                                                     {...register('region', {
                                                         required: "Region address is required"
                                                     })}

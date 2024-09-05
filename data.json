@@ -12421,43 +12421,23 @@
       "password": "TEST@test123",
       "addresses": [
         {
-          "name": "viral",
-          "email": "viral@gmail.com",
+          "name": "Demo User 1",
+          "email": "demouser@gmail.com",
+          "city": "Mumbai",
+          "region": "Maharastra",
+          "pinCode": "111",
+          "phone": "9977886677",
+          "street": "2, Malad west, Mumbai",
+          "country": "India"
+        },
+        {
+          "name": "new men",
+          "email": "test@gmail.com",
           "phone": "3333444455",
           "country": "India",
+          "city": "Ahmedabad ",
           "street": "test address",
-          "city": "UNJHA",
-          "region": "rrrr",
-          "pinCode": "4445"
-        },
-        {
-          "name": "viral",
-          "email": "viral@gmail.com",
-          "phone": "3333444455",
-          "country": "India",
-          "street": "test address",
-          "city": "UNJHA",
-          "region": "rrrr",
-          "pinCode": "4445"
-        },
-        {
-          "name": "rrrr",
-          "email": "eee@gmail.com",
-          "phone": "44444",
-          "country": "India",
-          "street": "44555",
-          "city": "ww",
-          "region": "ee",
-          "pinCode": "33"
-        },
-        {
-          "name": "HeyMan",
-          "email": "hey@gmail.com",
-          "phone": "5454546636",
-          "country": "India",
-          "street": "menaddress",
-          "city": "eee",
-          "region": "drd",
+          "region": "test",
           "pinCode": "44555"
         }
       ]
@@ -12466,10 +12446,10 @@
   "cart": [],
   "orders": [
     {
-      "id": "3d01",
+      "id": "5c65",
       "cartItems": [
         {
-          "id": "4af9",
+          "id": "1612",
           "title": "Essence Mascara Lash Princess",
           "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
           "category": "beauty",
@@ -12527,12 +12507,12 @@
             "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
           ],
           "thumbnail": "https://static0.colliderimages.com/wordpress/wp-content/uploads/pixels-logo.jpeg",
-          "quantity": 3,
+          "quantity": 4,
           "user": "f9d8"
         }
       ],
-      "totalAmount": 29.97,
-      "totalItems": 3,
+      "totalAmount": 39.96,
+      "totalItems": 4,
       "selectAddress": {
         "name": "HeyMan",
         "email": "hey@gmail.com",
@@ -12543,159 +12523,87 @@
         "region": "drd",
         "pinCode": "44555"
       },
-      "selectPaymentMethod": "cash",
+      "selectPaymentMethod": "card",
       "status": "pending"
     },
     {
-      "id": "823d",
+      "id": "ad84",
       "cartItems": [
         {
-          "id": "e0d3",
-          "title": "Eyeshadow Palette with Mirror",
-          "description": "The Eyeshadow Palette with Mirror offers a versatile range of eyeshadow shades for creating stunning eye looks. With a built-in mirror, it's convenient for on-the-go makeup application.",
+          "id": "dd8a",
+          "title": "Essence Mascara Lash Princess",
+          "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
           "category": "beauty",
-          "price": 19.99,
-          "discountPercentage": 5.5,
-          "rating": 3.28,
-          "stock": 44,
+          "price": 9.99,
+          "discountPercentage": 7.17,
+          "rating": 4.94,
+          "stock": 5,
           "tags": [
             "beauty",
-            "eyeshadow"
+            "mascara"
           ],
-          "brand": "Glamour Beauty",
-          "sku": "MVCFH27F",
-          "weight": 3,
+          "brand": "Essence",
+          "sku": "RCH45Q1A",
+          "weight": 2,
           "dimensions": {
-            "width": 12.42,
-            "height": 8.63,
-            "depth": 29.13
+            "width": 23.17,
+            "height": 14.43,
+            "depth": 28.01
           },
-          "warrantyInformation": "1 year warranty",
-          "shippingInformation": "Ships in 2 weeks",
-          "availabilityStatus": "In Stock",
+          "warrantyInformation": "1 month warranty",
+          "shippingInformation": "Ships in 1 month",
+          "availabilityStatus": "Low Stock",
           "reviews": [
             {
-              "rating": 4,
-              "comment": "Very satisfied!",
+              "rating": 2,
+              "comment": "Very unhappy with my purchase!",
               "date": "2024-05-23T08:56:21.618Z",
-              "reviewerName": "Liam Garcia",
-              "reviewerEmail": "liam.garcia@x.dummyjson.com"
+              "reviewerName": "John Doe",
+              "reviewerEmail": "john.doe@x.dummyjson.com"
             },
             {
-              "rating": 1,
-              "comment": "Very disappointed!",
+              "rating": 2,
+              "comment": "Not as described!",
               "date": "2024-05-23T08:56:21.618Z",
-              "reviewerName": "Nora Russell",
-              "reviewerEmail": "nora.russell@x.dummyjson.com"
+              "reviewerName": "Nolan Gonzalez",
+              "reviewerEmail": "nolan.gonzalez@x.dummyjson.com"
             },
             {
               "rating": 5,
-              "comment": "Highly impressed!",
+              "comment": "Very satisfied!",
               "date": "2024-05-23T08:56:21.618Z",
-              "reviewerName": "Elena Baker",
-              "reviewerEmail": "elena.baker@x.dummyjson.com"
+              "reviewerName": "Scarlett Wright",
+              "reviewerEmail": "scarlett.wright@x.dummyjson.com"
             }
           ],
           "returnPolicy": "30 days return policy",
-          "minimumOrderQuantity": 32,
+          "minimumOrderQuantity": 24,
           "meta": {
             "createdAt": "2024-05-23T08:56:21.618Z",
             "updatedAt": "2024-05-23T08:56:21.618Z",
-            "barcode": "2817839095220",
+            "barcode": "9164035109868",
             "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
           },
           "images": [
-            "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/1.png"
+            "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
           ],
           "thumbnail": "https://static0.colliderimages.com/wordpress/wp-content/uploads/pixels-logo.jpeg",
-          "quantity": 3,
+          "quantity": 1,
           "user": "f9d8"
         }
       ],
-      "totalAmount": 59.97,
-      "totalItems": 3,
+      "totalAmount": 9.99,
+      "totalItems": 1,
       "selectAddress": {
-        "name": "rrrr",
-        "email": "eee@gmail.com",
-        "phone": "44444",
+        "name": "Demo User",
+        "email": "demouser@gmail.com",
+        "phone": "9977886677",
         "country": "India",
-        "street": "44555",
-        "city": "ww",
-        "region": "ee",
-        "pinCode": "33"
+        "street": "2, Malad west, Mumbai",
+        "city": "Mumbai",
+        "region": "Maharastra",
+        "pinCode": "111"
       },
-      "selectPaymentMethod": "cash",
-      "status": "pending"
-    },
-    {
-      "id": "6832",
-      "cartItems": [
-        {
-          "id": "110e",
-          "title": "Powder Canister",
-          "description": "The Powder Canister is a finely milled setting powder designed to set makeup and control shine. With a lightweight and translucent formula, it provides a smooth and matte finish.",
-          "category": "beauty",
-          "price": 14.99,
-          "discountPercentage": 18.14,
-          "rating": 3.82,
-          "stock": 59,
-          "tags": [
-            "beauty",
-            "face powder"
-          ],
-          "brand": "Velvet Touch",
-          "sku": "9EN8WLT2",
-          "weight": 8,
-          "dimensions": {
-            "width": 24.16,
-            "height": 10.7,
-            "depth": 11.07
-          },
-          "warrantyInformation": "2 year warranty",
-          "shippingInformation": "Ships in 1-2 business days",
-          "availabilityStatus": "In Stock",
-          "reviews": [
-            {
-              "rating": 5,
-              "comment": "Very happy with my purchase!",
-              "date": "2024-05-23T08:56:21.618Z",
-              "reviewerName": "Ethan Thompson",
-              "reviewerEmail": "ethan.thompson@x.dummyjson.com"
-            },
-            {
-              "rating": 4,
-              "comment": "Great value for money!",
-              "date": "2024-05-23T08:56:21.618Z",
-              "reviewerName": "Levi Hicks",
-              "reviewerEmail": "levi.hicks@x.dummyjson.com"
-            },
-            {
-              "rating": 5,
-              "comment": "Highly impressed!",
-              "date": "2024-05-23T08:56:21.618Z",
-              "reviewerName": "Hazel Gardner",
-              "reviewerEmail": "hazel.gardner@x.dummyjson.com"
-            }
-          ],
-          "returnPolicy": "60 days return policy",
-          "minimumOrderQuantity": 25,
-          "meta": {
-            "createdAt": "2024-05-23T08:56:21.618Z",
-            "updatedAt": "2024-05-23T08:56:21.618Z",
-            "barcode": "0516267971277",
-            "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
-          },
-          "images": [
-            "https://cdn.dummyjson.com/products/images/beauty/Powder%20Canister/1.png"
-          ],
-          "thumbnail": "https://static0.colliderimages.com/wordpress/wp-content/uploads/pixels-logo.jpeg",
-          "quantity": 2,
-          "user": "eddb"
-        }
-      ],
-      "totalAmount": 29.98,
-      "totalItems": 2,
-      "selectAddress": null,
       "selectPaymentMethod": "cash",
       "status": "pending"
     }

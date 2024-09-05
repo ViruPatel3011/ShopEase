@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLoggedInUserOrdersAsync, selectUserOrders } from '../userSlice';
-import { selectLoggedInUser } from '../../auth/authSlice';
+import { selectUserInfo } from '../userSlice';
 
 
 export function UserOrders() {
     const dispatch = useDispatch();
-    const user = useSelector(selectLoggedInUser);
+    const user = useSelector(selectUserInfo);
     const orders = useSelector(selectUserOrders);
     console.log('orders', orders);
 
@@ -19,7 +19,7 @@ export function UserOrders() {
     return (
         <div>
             {orders && orders.map((order,index) => (
-                <div key={index}>
+                <div key={index }>
                     <div>
                         <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
                             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
