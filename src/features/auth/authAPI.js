@@ -45,3 +45,10 @@ export function updateUser(updatedData) {
         resolve({ data });
     });
 }
+
+
+export function signOut(userId) {
+    return new Promise(async (resolve, reject) => {
+        resolve({ data:'sucess' });
+    });
+}
