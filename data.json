@@ -12401,8 +12401,212 @@
     {
       "id": "eddb",
       "email": "emily.johnson@x.dummyjson.com",
-      "password": "Emily@1234"
+      "password": "Emily@1234",
+      "addresses": [
+        {
+          "name": "viral",
+          "email": "viral@gmail.com",
+          "phone": "3333444455",
+          "country": "India",
+          "street": "test address",
+          "city": "UNJHA",
+          "region": "rrrr",
+          "pinCode": "4445"
+        }
+      ]
+    },
+    {
+      "id": "f9d8",
+      "email": "test@gmail.com",
+      "password": "TEST@test123",
+      "addresses": [
+        {
+          "name": "viral",
+          "email": "viral@gmail.com",
+          "phone": "3333444455",
+          "country": "India",
+          "street": "test address",
+          "city": "UNJHA",
+          "region": "rrrr",
+          "pinCode": "4445"
+        },
+        {
+          "name": "viral",
+          "email": "viral@gmail.com",
+          "phone": "3333444455",
+          "country": "India",
+          "street": "test address",
+          "city": "UNJHA",
+          "region": "rrrr",
+          "pinCode": "4445"
+        },
+        {
+          "name": "rrrr",
+          "email": "eee@gmail.com",
+          "phone": "44444",
+          "country": "India",
+          "street": "44555",
+          "city": "ww",
+          "region": "ee",
+          "pinCode": "33"
+        },
+        {
+          "name": "HeyMan",
+          "email": "hey@gmail.com",
+          "phone": "5454546636",
+          "country": "India",
+          "street": "menaddress",
+          "city": "eee",
+          "region": "drd",
+          "pinCode": "44555"
+        }
+      ]
     }
   ],
-  "cart": []
+  "cart": [
+    {
+      "id": "1",
+      "title": "Essence Mascara Lash Princess",
+      "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+      "category": "beauty",
+      "price": 9.99,
+      "discountPercentage": 7.17,
+      "rating": 4.94,
+      "stock": 5,
+      "tags": [
+        "beauty",
+        "mascara"
+      ],
+      "brand": "Essence",
+      "sku": "RCH45Q1A",
+      "weight": 2,
+      "dimensions": {
+        "width": 23.17,
+        "height": 14.43,
+        "depth": 28.01
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 1 month",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Very unhappy with my purchase!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "John Doe",
+          "reviewerEmail": "john.doe@x.dummyjson.com"
+        },
+        {
+          "rating": 2,
+          "comment": "Not as described!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "Nolan Gonzalez",
+          "reviewerEmail": "nolan.gonzalez@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Very satisfied!",
+          "date": "2024-05-23T08:56:21.618Z",
+          "reviewerName": "Scarlett Wright",
+          "reviewerEmail": "scarlett.wright@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 24,
+      "meta": {
+        "createdAt": "2024-05-23T08:56:21.618Z",
+        "updatedAt": "2024-05-23T08:56:21.618Z",
+        "barcode": "9164035109868",
+        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
+      },
+      "images": [
+        "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+      ],
+      "thumbnail": "https://static0.colliderimages.com/wordpress/wp-content/uploads/pixels-logo.jpeg",
+      "quantity": 2,
+      "user": "f9d8"
+    }
+  ],
+  "orders": [
+    {
+      "id": "157a",
+      "cartItems": [
+        {
+          "id": "1",
+          "title": "Essence Mascara Lash Princess",
+          "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+          "category": "beauty",
+          "price": 9.99,
+          "discountPercentage": 7.17,
+          "rating": 4.94,
+          "stock": 5,
+          "tags": [
+            "beauty",
+            "mascara"
+          ],
+          "brand": "Essence",
+          "sku": "RCH45Q1A",
+          "weight": 2,
+          "dimensions": {
+            "width": 23.17,
+            "height": 14.43,
+            "depth": 28.01
+          },
+          "warrantyInformation": "1 month warranty",
+          "shippingInformation": "Ships in 1 month",
+          "availabilityStatus": "Low Stock",
+          "reviews": [
+            {
+              "rating": 2,
+              "comment": "Very unhappy with my purchase!",
+              "date": "2024-05-23T08:56:21.618Z",
+              "reviewerName": "John Doe",
+              "reviewerEmail": "john.doe@x.dummyjson.com"
+            },
+            {
+              "rating": 2,
+              "comment": "Not as described!",
+              "date": "2024-05-23T08:56:21.618Z",
+              "reviewerName": "Nolan Gonzalez",
+              "reviewerEmail": "nolan.gonzalez@x.dummyjson.com"
+            },
+            {
+              "rating": 5,
+              "comment": "Very satisfied!",
+              "date": "2024-05-23T08:56:21.618Z",
+              "reviewerName": "Scarlett Wright",
+              "reviewerEmail": "scarlett.wright@x.dummyjson.com"
+            }
+          ],
+          "returnPolicy": "30 days return policy",
+          "minimumOrderQuantity": 24,
+          "meta": {
+            "createdAt": "2024-05-23T08:56:21.618Z",
+            "updatedAt": "2024-05-23T08:56:21.618Z",
+            "barcode": "9164035109868",
+            "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
+          },
+          "images": [
+            "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+          ],
+          "thumbnail": "https://static0.colliderimages.com/wordpress/wp-content/uploads/pixels-logo.jpeg",
+          "quantity": 2,
+          "user": "f9d8"
+        }
+      ],
+      "totalAmount": 19.98,
+      "totalItems": 2,
+      "selectAddress": {
+        "name": "HeyMan",
+        "email": "hey@gmail.com",
+        "phone": "5454546636",
+        "country": "India",
+        "street": "menaddress",
+        "city": "eee",
+        "region": "drd",
+        "pinCode": "44555"
+      },
+      "selectPaymentMethod": "card"
+    }
+  ]
 }
