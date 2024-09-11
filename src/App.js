@@ -11,6 +11,7 @@ import CartPage from './pages/CartPage';
 import Checkout from './pages/CheckOut';
 import ProductDetailPage from './pages/ProductDetailPage';
 import Protected from './features/auth/components/Protected';
+import ProtectedAdmin from './features/auth/components/ProtectedAdmin';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import { selectLoggedInUser } from './features/auth/authSlice';
@@ -21,6 +22,9 @@ import UserProfilePage from './pages/UserProfilePage';
 import { fetchLoggedInUserAsync } from './features/user/userSlice';
 import LogOut from './features/auth/components/LogOut';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import AdminProductDetailPage from './pages/AdminProductDetailPage';
+import AdminHome from './pages/AdminHome';
+import AdminProductFormPage from './pages/AdminProductFormPage';
 
 const router = createBrowserRouter([
   {
@@ -90,6 +94,34 @@ const router = createBrowserRouter([
       </Protected>
   },
   {
+    path: "/admin",
+    element:
+      <ProtectedAdmin>
+        <AdminHome></AdminHome>
+      </ProtectedAdmin>
+  },
+  {
+    path: "/admin/product-detail/:id",
+    element:
+      <ProtectedAdmin>
+        <AdminProductDetailPage></AdminProductDetailPage>
+      </ProtectedAdmin>
+  },
+  {
+    path: "/admin/product-form",
+    element:
+      <ProtectedAdmin>
+        <AdminProductFormPage></AdminProductFormPage>
+      </ProtectedAdmin>
+  },
+  {
+    path: "/admin/product-form/edit/:id",
+    element:
+      <ProtectedAdmin>
+        <AdminProductFormPage></AdminProductFormPage>
+      </ProtectedAdmin>
+  },
+  {
     path: "*",
     element:
       <PageNotFound></PageNotFound>,
@@ -108,9 +140,11 @@ function App() {
   }, [dispatch, user])
 
   return (
-    <div className="App">
-      <RouterProvider router={router} />
-    </div>
+    <>
+      <div className="App">
+        <RouterProvider router={router} />
+      </div>
+    </>
   );
 }
 
