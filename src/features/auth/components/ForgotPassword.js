@@ -1,11 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 
 export default function ForgotPasswod() {
-    const dispatch = useDispatch();
 
     const {
         register,
@@ -37,7 +35,6 @@ export default function ForgotPasswod() {
                         className="space-y-6"
                         noValidate
                         onSubmit={handleSubmit((data) => {
-                            console.log("data:", data);
                             reset()
                         })}>
                         <div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { selectItems, updateCartAsync, deleteCartAsync } from './cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +34,7 @@ export function Cart() {
                 </div>
               ) : (
                 <>
-                  <ul role="list" className="-my-6 divide-y divide-gray-200">
+                  <ul className="-my-6 divide-y divide-gray-200">
                     {cartItems.map((cart) => (
                       <li key={cart.id} className="flex py-6">
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">

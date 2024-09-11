@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLoggedInUserOrdersAsync, selectUserOrders } from '../userSlice';
 import { selectUserInfo } from '../userSlice';
@@ -8,7 +8,6 @@ export function UserOrders() {
     const dispatch = useDispatch();
     const user = useSelector(selectUserInfo);
     const orders = useSelector(selectUserOrders);
-    console.log('orders', orders);
 
     useEffect(() => {
         if (user) {
@@ -18,8 +17,8 @@ export function UserOrders() {
 
     return (
         <div>
-            {orders && orders.map((order,index) => (
-                <div key={index }>
+            {orders && orders.map((order, index) => (
+                <div key={index}>
                     <div>
                         <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
                             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -30,8 +29,8 @@ export function UserOrders() {
                                     Order Status : {order.status}
                                 </h3>
                                 <div className="flow-root">
-                                    <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                        {order.cartItems.map((item,index) => (
+                                    <ul className="-my-6 divide-y divide-gray-200">
+                                        {order.cartItems.map((item, index) => (
                                             <li key={index} className="flex py-6">
                                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                     <img

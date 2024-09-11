@@ -244,7 +244,7 @@ function Checkout() {
                                         Choose from existing address
                                     </p>
 
-                                    <ul role="list" className="divide-y divide-gray-100">
+                                    <ul className="divide-y divide-gray-100">
                                         {user.addresses.map((address, index) => (
                                             <li key={index} className="flex justify-between gap-x-6 py-5">
                                                 <div className="flex min-w-0 gap-x-4">
@@ -330,7 +330,7 @@ function Checkout() {
                                         </div>
                                     ) : (
                                         <>
-                                            <ul role="list" className="-my-6 divide-y divide-gray-200">
+                                            <ul className="-my-6 divide-y divide-gray-200">
                                                 {cartItems.map((cart) => (
                                                     <li key={cart.id} className="flex py-6">
                                                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">

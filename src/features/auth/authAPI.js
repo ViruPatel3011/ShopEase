@@ -41,7 +41,6 @@ export function updateUser(updatedData) {
             headers: { 'content-type': 'application/json' },
         });
         const data = await response.json();
-        console.log("userdata:",data);
         resolve({ data });
     });
 }

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { selectLoggedInUser, selectError, createUserAsync, checkUserAsync } from "../authSlice";
+import React from 'react';
+import { selectLoggedInUser, selectError, checkUserAsync } from "../authSlice";
 import { Link, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
