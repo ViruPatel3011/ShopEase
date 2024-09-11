@@ -119,7 +119,8 @@
       "images": [
         "https://cdn.dummyjson.com/products/images/beauty/Eyeshadow%20Palette%20with%20Mirror/1.png"
       ],
-      "thumbnail": "https://static0.colliderimages.com/wordpress/wp-content/uploads/pixels-logo.jpeg"
+      "thumbnail": "https://static0.colliderimages.com/wordpress/wp-content/uploads/pixels-logo.jpeg",
+      "deleted": false
     },
     {
       "id": "3",
@@ -12468,6 +12469,12 @@
       "id": "b4c1",
       "email": "newUser@gmail.com",
       "password": "newUser@1234",
+      "role": "user"
+    },
+    {
+      "id": "d5e9",
+      "email": "johnyLal@gmail.com",
+      "password": "Johny@1234",
       "role": "user"
     }
   ],

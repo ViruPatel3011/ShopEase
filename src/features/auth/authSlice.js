@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { checkUser, createUser, updateUser, signOut } from './authAPI';
+import { showToaster } from '../../utils/Toaster';
+import { ToasterType } from '../../app/constant';
 
 const initialState = {
     loggedInUser: null,
@@ -56,6 +58,8 @@ export const authSlice = createSlice({
             .addCase(createUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUser = action.payload;
+                showToaster(ToasterType.Success, 'User created successfully');
+
             })
             .addCase(checkUserAsync.pending, (state) => {
                 state.status = 'loading';
@@ -63,6 +67,8 @@ export const authSlice = createSlice({
             .addCase(checkUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUser = action.payload;
+                showToaster(ToasterType.Success, 'User Login successfully');
+
             })
             .addCase(checkUserAsync.rejected, (state, action) => {
                 state.status = 'idle';
@@ -74,12 +80,15 @@ export const authSlice = createSlice({
             .addCase(updateUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUser = action.payload;
-            }).addCase(signOutAsync.pending, (state) => {
+            })
+            .addCase(signOutAsync.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(signOutAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUser = null;
+                showToaster(ToasterType.Success, 'SignOut successfully');
+
             })
 
     },
