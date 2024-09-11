@@ -7,6 +7,7 @@ import { deleteCartAsync, updateCartAsync } from '../features/cart/cartSlice';
 import { updateUserAsync } from "../features/auth/authSlice";
 import { selectUserInfo } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/orders/orderSlice';
+import { discountedPrice } from '../app/constant';
 
 
 function Checkout() {
@@ -24,7 +25,7 @@ function Checkout() {
 
     const cartItems = useSelector(selectItems);
     const currentOrder = useSelector(selectCurrentOrder);
-    const totalAmount = cartItems.reduce((amount, item) => item.price * item.quantity + amount, 0)
+    const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item) * item.quantity + amount, 0)
     const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
 
     const handleRemove = (e, id) => {
@@ -348,8 +349,7 @@ function Checkout() {
                                                                         <a href={cart.thumbnail} target="_blank" rel="noreferrer">{cart.title}</a>
                                                                     </h3>
                                                                     <div>
-                                                                        <p className="ml-4">${Math.round(cart.price * (1 - cart.discountPercentage / 100))}</p>
-                                                                        <p className="ml-4 block text-gray-500 line-through">{cart.price}</p>
+                                                                        <p className="ml-4">${discountedPrice(cart)}</p>
                                                                     </div>
                                                                 </div>
                                                                 <p className="mt-1 text-sm text-gray-500">{cart.brand}</p>

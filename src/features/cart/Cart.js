@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { selectItems, updateCartAsync, deleteCartAsync } from './cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { discountedPrice } from '../../app/constant';
 
 
 export function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectItems);
-  const totalAmount = cartItems.reduce((amount, item) => item.price * item.quantity + amount, 0)
+  const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item) * item.quantity + amount, 0)
   const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
 
   const handleRemove = (e, id) => {
@@ -52,7 +53,7 @@ export function Cart() {
                                 <a href={cart.thumbnail} target="_blank" rel="noreferrer">{cart.title}</a>
                               </h3>
                               <div>
-                                <p className="ml-4">${Math.round(cart.price * (1 - cart.discountPercentage / 100))}</p>
+                                <p className="ml-4">${discountedPrice(cart)}</p>
                                 <p className="ml-4 block text-gray-500 line-through">{cart.price}</p>
                               </div>
                             </div>

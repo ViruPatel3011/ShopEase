@@ -25,7 +25,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon, StarIcon } from '@heroicons/react/20/solid'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
-import { ITEMS_PER_PAGE } from '../../../app/constant';
+import { discountedPrice, ITEMS_PER_PAGE } from '../../../app/constant';
 
 
 
@@ -427,7 +427,7 @@ function ProductGrid({ products }) {
                                         </div>
                                         <div>
                                             <p className="text-sm block font-medium text-gray-900">
-                                                ${Math.round(product.price * (1 - product.discountPercentage / 100))}
+                                                ${discountedPrice(product)}
                                             </p>
                                             <p className="text-sm block line-through font-medium text-gray-400">
                                                 ${product.price}

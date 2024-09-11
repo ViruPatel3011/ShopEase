@@ -12552,7 +12552,7 @@
         "pinCode": "44555"
       },
       "selectPaymentMethod": "card",
-      "status": "pending"
+      "status": "cancelled"
     },
     {
       "id": "ad84",

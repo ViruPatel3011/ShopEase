@@ -6,6 +6,7 @@ import { fetchProductByIdAsync, selectedProductById } from '../ProductSlice';
 import { useParams } from 'react-router-dom';
 import { addToCartAsync } from '../../cart/cartSlice';
 import { selectLoggedInUser } from "../../auth/authSlice"
+import { discountedPrice } from '../../../app/constant';
 
 
 const colors = [
@@ -136,8 +137,8 @@ export default function ProductDetail() {
             {/* Options */}
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl tracking-tight text-gray-900 block ">
-                ${Math.round(productSelected.price * (1 - productSelected.discountPercentage / 100))}
+              <p className="text-xl line-through tracking-tight text-gray-900 block ">
+                ${discountedPrice(productSelected)}
               </p>
               <p className="text-sm block font-medium text-gray-700 line-through">${productSelected.price}</p>
 
