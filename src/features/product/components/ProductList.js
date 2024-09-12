@@ -8,6 +8,7 @@ import {
   fetchAllBrandsAsync,
   selectBrands,
   selectCategories,
+  selectProductListStatus
 } from "../ProductSlice";
 import {
   Dialog,
@@ -20,7 +21,8 @@ import {
   MenuButton,
   MenuItem,
   MenuItems,
-} from '@headlessui/react'
+} from '@headlessui/react';
+import { Grid } from 'react-loader-spinner';
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon, StarIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
@@ -50,6 +52,7 @@ export default function ProductList() {
 
   const products = useSelector(selectAllProducts);
   const totalItems = useSelector(selectTotalItems);
+  const status = useSelector(selectProductListStatus);
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
 
@@ -177,7 +180,7 @@ export default function ProductList() {
                   {/* Product grid */}
                   <div className="lg:col-span-3">
                     {/* Products Lists Page */}
-                    <ProductGrid products={products}></ProductGrid>
+                    <ProductGrid products={products} status={status}></ProductGrid>
                   </div>
                   {/* Product Grid end  */}
                 </div>
@@ -311,16 +314,25 @@ function DesktopFilter({ filters, handleFilter }) {
 
 
 
-function ProductGrid({ products }) {
+function ProductGrid({ products, status }) {
   return (
     <>
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-
-
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            {status === 'loading' ? (
+              <Grid
+                height="80"
+                width="80"
+                color="rgb(79, 70, 229) "
+                ariaLabel="grid-loading"
+                radius="12.5"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            ) : null}
             {products.map((product) => (
-
               <Link to={`/product-detail/${product.id}`} key={product.id}>
                 <div className="group relative border-solid border-2 p-2 border-gray-200">
                   <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
@@ -356,6 +368,11 @@ function ProductGrid({ products }) {
                 {product.deleted && (
                   <div>
                     <p className="text-sm text-red-400">product deleted</p>
+                  </div>
+                )}
+                {product.stock <= 0 && (
+                  <div>
+                    <p className="text-sm text-red-400">out of stock</p>
                   </div>
                 )}
               </Link>

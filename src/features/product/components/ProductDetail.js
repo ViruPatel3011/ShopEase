@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup, Label } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductByIdAsync, selectedProductById } from '../ProductSlice';
+import { fetchProductByIdAsync, selectedProductById, selectProductListStatus } from '../ProductSlice';
 import { useParams } from 'react-router-dom';
-import { addToCartAsync } from '../../cart/cartSlice';
+import { addToCartAsync, selectItems } from '../../cart/cartSlice';
 import { selectLoggedInUser } from "../../auth/authSlice"
 import { discountedPrice } from '../../../app/constant';
+import { Grid } from 'react-loader-spinner';
+import { showToaster } from '../../../utils/Toaster';
+import { ToasterType } from '../../../app/constant';
 
 
 const colors = [
@@ -45,6 +48,8 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const productSelected = useSelector(selectedProductById);
+  const items = useSelector(selectItems);
+  const status = useSelector(selectProductListStatus);
   const user = useSelector(selectLoggedInUser);
   const dispatch = useDispatch();
   const params = useParams();
@@ -55,14 +60,37 @@ export default function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
-    const newItem = { ...productSelected, quantity: 1, user: user.id }
-    delete newItem['id'];
-    dispatch(addToCartAsync(newItem))
+    if (items.findIndex((item) => item.productId === productSelected.id) < 0) {
+      console.log({ items, productSelected });
+      const newItem = {
+        ...productSelected,
+        productId: productSelected.id,
+        quantity: 1,
+        user: user.id,
+      };
+      delete newItem['id'];
+      dispatch(addToCartAsync(newItem));
+      showToaster(ToasterType.Success, 'Item added to Cart');
+    } else {
+      showToaster(ToasterType.Error, 'Item Already added');
+    }
   }
 
 
   return (
     <div className="bg-white">
+      {status === 'loading' ? (
+        <Grid
+          height="80"
+          width="80"
+          color="rgb(79, 70, 229) "
+          ariaLabel="grid-loading"
+          radius="12.5"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      ) : null}
       {productSelected && (
         <div className="pt-6">
           <nav aria-label="Breadcrumb">

@@ -1,15 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { selectItems, updateCartAsync, deleteCartAsync } from './cartSlice';
+import React, { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { selectItems, updateCartAsync, deleteCartAsync, selectCartStatus } from './cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { discountedPrice } from '../../app/constant';
+import { Grid } from 'react-loader-spinner';
+import Modal from '../common/Modal';
 
 
 export function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectItems);
+  const status = useSelector(selectCartStatus);
   const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item) * item.quantity + amount, 0)
   const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
+  const [openModal, setOpenModal] = useState(null);
 
   const handleRemove = (e, id) => {
     dispatch(deleteCartAsync(id));
@@ -23,11 +27,23 @@ export function Cart() {
     <>
       <div>
         <div className="bg-gray-200 mt-14  mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flow-root">
-
-            <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-              <h1 className="text-4xl font-bold my-4 tracking-tight text-gray-900">Cart</h1>
-
+          <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+            <h1 className="text-4xl font-bold my-4 tracking-tight text-gray-900">
+              Cart
+            </h1>
+            <div className="flow-root">
+              {status === 'loading' ? (
+                <Grid
+                  height="80"
+                  width="80"
+                  color="rgb(79, 70, 229) "
+                  ariaLabel="grid-loading"
+                  radius="12.5"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                />
+              ) : null}
               {cartItems.length === 0 ? (
                 <div className="text-center py-6">
                   <p className="text-lg text-gray-500">  Your cart is empty, but your next favorite find is just a click away! <br />
@@ -74,7 +90,20 @@ export function Cart() {
                             </div>
 
                             <div className="flex">
-                              <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={(e) => handleRemove(e, cart.id)}>
+                              <Modal
+                                title={`Delete ${cart.title}`}
+                                message="Are you sure you want to delete this Cart item ?"
+                                dangerOption="Delete"
+                                cancelOption="Cancel"
+                                dangerAction={(e) => handleRemove(e, cart.id)}
+                                cancelAction={() => setOpenModal(null)}
+                                showModal={openModal === cart.id}
+                              ></Modal>
+
+                              <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={e => {
+                                setOpenModal(cart.id)
+                              }}
+                              >
                                 Remove
                               </button>
                             </div>
