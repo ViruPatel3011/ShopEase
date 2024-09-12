@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { checkUser, createUser, updateUser, signOut } from './authAPI';
 import { showToaster } from '../../utils/Toaster';
 import { ToasterType } from '../../app/constant';
-
+import axiosInstance from '../../helpers/axiosInstance';
 const initialState = {
     loggedInUser: null,
     status: 'idle',
@@ -20,9 +20,21 @@ export const createUserAsync = createAsyncThunk(
 
 export const checkUserAsync = createAsyncThunk(
     'user/checkUser',
-    async (loginInfo) => {
-        const response = await checkUser(loginInfo);
-        return response.data;
+    async (loginInfo, thunkAPI) => {
+        try {
+            const response = await axiosInstance.post("/auth/login", loginInfo);
+            if (response.data.success) {
+                return response.data;
+            } else {
+                return thunkAPI.rejectWithValue(await response.data);
+            }
+        } catch (error) {
+            if (error.response) {
+                return thunkAPI.rejectWithValue(error.response.data);
+            } else {
+                return thunkAPI.rejectWithValue({ message: error.message });
+            }
+        }
     }
 );
 
@@ -57,7 +69,7 @@ export const authSlice = createSlice({
             })
             .addCase(createUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.loggedInUser = action.payload;
+                state.loggedInUser = action.payload.data;
                 showToaster(ToasterType.Success, 'User created successfully');
 
             })
@@ -66,13 +78,15 @@ export const authSlice = createSlice({
             })
             .addCase(checkUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.loggedInUser = action.payload;
-                showToaster(ToasterType.Success, 'User Login successfully');
+                console.log("ActionPayload", action.payload.data)
+                state.loggedInUser = action.payload.data;
+                showToaster(ToasterType.Success, action.payload.message);
 
             })
             .addCase(checkUserAsync.rejected, (state, action) => {
                 state.status = 'idle';
-                state.error = action.error;
+                console.log("Action:", action.payload.message)
+                state.error = action.payload.message;
             })
             .addCase(updateUserAsync.pending, (state) => {
                 state.status = 'loading';
