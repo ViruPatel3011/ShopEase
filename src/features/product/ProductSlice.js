@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchProductsByFilters, createProduct, updateProduct } from './ProductAPI';
+import { fetchProductsByFilters, updateProduct } from './ProductAPI';
 import axiosInstance from '../../helpers/axiosInstance';
 import { ToasterType } from '../../app/constant';
 import { showToaster } from '../../utils/Toaster';

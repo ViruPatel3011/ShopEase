@@ -8,6 +8,8 @@ import { updateUserAsync } from "../features/auth/authSlice";
 import { selectUserInfo } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/orders/orderSlice';
 import { discountedPrice } from '../app/constant';
+import { showToaster } from '../utils/Toaster';
+import { ToasterType } from '../app/constant';
 
 
 function Checkout() {
@@ -51,7 +53,7 @@ function Checkout() {
             dispatch(createOrderAsync(order));
         }
         else {
-            console.log("enter address")
+            showToaster(ToasterType.Error,"Please select address")
         }
     }
 

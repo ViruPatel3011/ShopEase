@@ -8,16 +8,3 @@ export function fetchLoggedInUserOrders(userId) {
   }
   );
 }
-
-
-export function updateUser(updatedData) {
-  return new Promise(async (resolve, reject) => {
-    const response = await fetch(`${baseUrl}/users/` + updatedData.id, {
-      method: 'PATCH',
-      body: JSON.stringify(updatedData),
-      headers: { 'content-type': 'application/json' },
-    });
-    const data = await response.json();
-    resolve({ data });
-  });
-}

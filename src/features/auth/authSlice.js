@@ -57,7 +57,9 @@ export const updateUserAsync = createAsyncThunk(
     'user/updateUser',
     async (updateInfo, thunkAPI) => {
         try {
-            const response = await axiosInstance.patch("/users/", updateInfo.id);
+            console.log('updateInfo', updateInfo);
+            const response = await axiosInstance.patch(`/users/${updateInfo.id}`, updateInfo);
+            console.log('response', response);
             if (response.data.success) {
                 return response.data;
             } else {
@@ -119,6 +121,7 @@ export const authSlice = createSlice({
             })
             .addCase(updateUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
+                console.log("updateUserAsyncPayload:", action.payload.data)
                 state.loggedInUser = action.payload.data;
             })
             .addCase(signOutAsync.pending, (state) => {
