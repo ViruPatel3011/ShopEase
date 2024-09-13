@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchAllProducts, fetchProductsByFilters, fetchCategories, fetchBrands, fetchProductById, createProduct, updateProduct } from './ProductAPI';
+import { fetchProductsByFilters, createProduct, updateProduct } from './ProductAPI';
+import axiosInstance from '../../helpers/axiosInstance';
+import { ToasterType } from '../../app/constant';
+import { showToaster } from '../../utils/Toaster';
 
 const initialState = {
   products: [],
@@ -10,19 +13,26 @@ const initialState = {
   selectedProduct: null
 };
 
-export const fetchAllProductsAsync = createAsyncThunk(
-  'product/fetchProducts',
-  async () => {
-    const response = await fetchAllProducts();
-    return response.data;
-  }
-);
-
 export const fetchProductByIdAsync = createAsyncThunk(
   'product/fetchProductByIdAsync',
-  async (id) => {
-    const response = await fetchProductById(id);
-    return response.data;
+  async (id, thunkAPI) => {
+    // const response = await fetchProductById(id);
+    // return response.data;
+    try {
+      const response = await axiosInstance.get(`/products/${id}`);
+      console.log('fetchProductByIdAsync', response);
+      if (response.data) {
+        return response.data; // Return the fetched brands data on success
+      } else {
+        return thunkAPI.rejectWithValue(response.data); // Handle failure response
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data); // Handle HTTP errors
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message }); // Handle network or other errors
+      }
+    }
   }
 );
 
@@ -37,28 +47,70 @@ export const fetchProductsByFiltersAsync = createAsyncThunk(
 
 export const fetchAllCategoriesAsync = createAsyncThunk(
   'category/fetchAllCategories',
-  async () => {
-    const response = await fetchCategories();
-    return response.data;
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get('/categories');
+      console.log('fetchAllCategoriesAsync', response);
+      if (response.data) {
+        return response.data; // Return the fetched brands data on success
+      } else {
+        return thunkAPI.rejectWithValue(response.data); // Handle failure response
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data); // Handle HTTP errors
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message }); // Handle network or other errors
+      }
+    }
   }
 )
 
 export const fetchAllBrandsAsync = createAsyncThunk(
   'brands/fetchAllBrands',
-  async () => {
-    const response = await fetchBrands();
-    return response.data;
+  async (_, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get('/brands');
+      console.log('fetchAllBrandsAsync', response);
+      if (response.data) {
+        return response.data; // Return the fetched brands data on success
+      } else {
+        return thunkAPI.rejectWithValue(response.data); // Handle failure response
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data); // Handle HTTP errors
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message }); // Handle network or other errors
+      }
+    }
   }
 )
 
 
 export const createProductAsync = createAsyncThunk(
   'product/createProduct',
-  async (product) => {
-    const response = await createProduct(product);
-    return response.data;
+  async (product, thunkAPI) => {
+    // const response = await createProduct(product);
+    // return response.data;
+    try {
+      const response = await axiosInstance.post('/products', product);
+      console.log('createProductAsync', response);
+      if (response.data) {
+        return response.data; // Return the fetched brands data on success
+      } else {
+        return thunkAPI.rejectWithValue(response.data); // Handle failure response
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data); // Handle HTTP errors
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message }); // Handle network or other errors
+      }
+    }
   }
 );
+
 export const updateProductAsync = createAsyncThunk(
   'product/updateProduct',
   async (update) => {
@@ -78,13 +130,6 @@ export const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllProductsAsync.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.products = action.payload;
-      })
       .addCase(fetchProductsByFiltersAsync.pending, (state) => {
         state.status = 'loading';
       })
@@ -98,28 +143,31 @@ export const productSlice = createSlice({
       })
       .addCase(fetchAllCategoriesAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.categories = action.payload;
+        state.categories = action.payload.data;
       })
       .addCase(fetchAllBrandsAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchAllBrandsAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.brands = action.payload;
+        state.brands = action.payload.data;
       })
       .addCase(fetchProductByIdAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchProductByIdAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.selectedProduct = action.payload;
+        console.log("fetchProductByIdAsyncPayload:", action.payload.data)
+        state.selectedProduct = action.payload.data;
       })
       .addCase(createProductAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(createProductAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.products.push(action.payload);
+        console.log('createProductAsyncPayload', action.payload.data);
+        state.products.push(action.payload.data);
+        showToaster(ToasterType.Success, action.payload.message);
       })
       .addCase(updateProductAsync.pending, (state) => {
         state.status = 'loading';

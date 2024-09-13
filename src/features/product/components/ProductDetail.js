@@ -48,6 +48,7 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const productSelected = useSelector(selectedProductById);
+  console.log('productSelected' , productSelected);
   const items = useSelector(selectItems);
   const status = useSelector(selectProductListStatus);
   const user = useSelector(selectLoggedInUser);
@@ -60,15 +61,12 @@ export default function ProductDetail() {
 
   const handleCart = (e) => {
     e.preventDefault();
-    if (items.findIndex((item) => item.productId === productSelected.id) < 0) {
-      console.log({ items, productSelected });
+    if (items.findIndex((item) => item.product.id === productSelected.id) < 0) {
       const newItem = {
-        ...productSelected,
-        productId: productSelected.id,
+        product: productSelected.id,
         quantity: 1,
         user: user.id,
       };
-      delete newItem['id'];
       dispatch(addToCartAsync(newItem));
       showToaster(ToasterType.Success, 'Item added to Cart');
     } else {
@@ -165,7 +163,7 @@ export default function ProductDetail() {
             {/* Options */}
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-xl line-through tracking-tight text-gray-900 block ">
+              <p className="text-3xl tracking-tight text-gray-900 block ">
                 ${discountedPrice(productSelected)}
               </p>
               <p className="text-sm block font-medium text-gray-700 line-through">${productSelected.price}</p>

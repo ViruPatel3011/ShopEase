@@ -19,12 +19,11 @@ export default function AdminOrders() {
     const [sort, setSort] = useState({});
 
     const handleEdit = (order) => {
-        console.log(order)
         setEditableOrderId(order.id);
     };
 
     const handleShow = (order) => {
-        console.log("Show")
+        console.log("Show");
     };
 
     const handleUpdate = (e, order) => {
@@ -55,7 +54,6 @@ export default function AdminOrders() {
 
     const handleSort = (sortOption) => {
         const sort = { _sort: sortOption.sort, _order: sortOption.order };
-        console.log({ sort });
         setSort(sort);
     };
 

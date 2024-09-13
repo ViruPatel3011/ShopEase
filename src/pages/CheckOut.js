@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link,Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../features/cart/cartSlice';
 import { useForm } from 'react-hook-form';
@@ -21,11 +21,12 @@ function Checkout() {
     } = useForm();
 
     const [selectAddress, setSelectedAddress] = useState(null);
-    const [selectPaymentMethod, setSelectPaymentMethod] = useState('cash');
+    const [paymentMethod, setPaymentMethod] = useState('cash');
 
     const cartItems = useSelector(selectItems);
     const currentOrder = useSelector(selectCurrentOrder);
-    const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item) * item.quantity + amount, 0)
+    console.log('currentOrder' , currentOrder);
+    const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item.product) * item.quantity + amount, 0)
     const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
 
     const handleRemove = (e, id) => {
@@ -33,7 +34,7 @@ function Checkout() {
     }
 
     const handleQuantity = (e, cart) => {
-        dispatch(updateCartAsync({ ...cart, quantity: +e.target.value }));
+        dispatch(updateCartAsync({ id: cart.id, quantity: +e.target.value }));
     }
 
     const handleAddress = (e) => {
@@ -41,12 +42,17 @@ function Checkout() {
     }
 
     const handlePayment = (e) => {
-        setSelectPaymentMethod(e.target.value);
+        setPaymentMethod(e.target.value);
     }
 
     const handleOrder = (e) => {
-        const order = { cartItems, totalAmount, totalItems, selectAddress, selectPaymentMethod, status: 'pending' }
-        dispatch(createOrderAsync(order));
+        if (selectAddress && paymentMethod) {
+            const order = { cartItems, totalAmount, user: user.id, totalItems, selectAddress, paymentMethod, status: 'pending' }
+            dispatch(createOrderAsync(order));
+        }
+        else {
+            console.log("enter address")
+        }
     }
 
     return (
@@ -55,6 +61,9 @@ function Checkout() {
             {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
+
+                    {/* Personal Information form  */}
+
                     <div className="lg:col-span-3">
                         <form className='bg-white px-5 mt-12 py-12'
                             noValidate
@@ -285,7 +294,7 @@ function Checkout() {
                                                         value="cash"
                                                         onChange={handlePayment}
                                                         name="payments"
-                                                        checked={selectPaymentMethod === 'cash'}
+                                                        checked={paymentMethod === 'cash'}
                                                         type="radio"
                                                         className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                                     />
@@ -299,7 +308,7 @@ function Checkout() {
                                                         value="card"
                                                         name="payments"
                                                         onChange={handlePayment}
-                                                        checked={selectPaymentMethod === 'card'}
+                                                        checked={paymentMethod === 'card'}
                                                         type="radio"
                                                         className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                                     />
@@ -313,10 +322,11 @@ function Checkout() {
                                     </div>
                                 </div>
                             </div>
-
-
                         </form>
                     </div>
+
+                    {/* CheckOut section */}
+
                     <div className="lg:col-span-2">
                         <div className="bg-gray-200 mt-14  mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                             <div className="flow-root">
@@ -336,8 +346,8 @@ function Checkout() {
                                                     <li key={cart.id} className="flex py-6">
                                                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                             <img
-                                                                alt={cart.title}
-                                                                src={cart.thumbnail}
+                                                                alt={cart.product.title}
+                                                                src={cart.product.thumbnail}
                                                                 className="h-full w-full object-cover object-center"
                                                             />
                                                         </div>
@@ -346,13 +356,13 @@ function Checkout() {
                                                             <div>
                                                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                                                     <h3>
-                                                                        <a href={cart.thumbnail} target="_blank" rel="noreferrer">{cart.title}</a>
+                                                                        <a href={cart.product.thumbnail} target="_blank" rel="noreferrer">{cart.product.title}</a>
                                                                     </h3>
                                                                     <div>
-                                                                        <p className="ml-4">${discountedPrice(cart)}</p>
+                                                                        <p className="ml-4">${discountedPrice(cart.product)}</p>
                                                                     </div>
                                                                 </div>
-                                                                <p className="mt-1 text-sm text-gray-500">{cart.brand}</p>
+                                                                <p className="mt-1 text-sm text-gray-500">{cart.product.brand}</p>
                                                             </div>
                                                             <div className="flex flex-1 items-end justify-between text-sm">
                                                                 <div className="text-gray-500">

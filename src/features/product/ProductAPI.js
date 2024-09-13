@@ -1,15 +1,5 @@
 import { baseUrl } from "../../app/constant";
 
-export function fetchAllProducts() {
-  return new Promise(async (resolve) => {
-    const response = await fetch(`${baseUrl}/products`);
-    const data = await response.json();
-    resolve({ data })
-  }
-  );
-}
-
-
 export function fetchProductsByFilters(filter, sort, pagination) {
   // filter = {"category":["smartphone","laptops"]}
   // sort = {_sort:"price",_order="desc"}

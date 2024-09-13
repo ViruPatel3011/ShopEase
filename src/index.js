@@ -13,7 +13,7 @@ root.render(
     <Provider store={store}>
       <App />
       <Toaster
-        position="top-right"
+        position="bottom-left"
         reverseOrder={false}
         toastOptions={{
           style: {

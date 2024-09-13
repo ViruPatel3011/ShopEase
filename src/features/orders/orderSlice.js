@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createOrder, updateOrder, fetchAllOrders } from './orderAPI';
+import axiosInstance from '../../helpers/axiosInstance';
 
 const initialState = {
   status: 'idle',
@@ -10,9 +11,26 @@ const initialState = {
 
 export const createOrderAsync = createAsyncThunk(
   'order/createOrder',
-  async (orderDetails) => {
-    const response = await createOrder(orderDetails);
-    return response.data;
+  async (orderDetails, thunkAPI) => {
+    // const response = await createOrder(orderDetails);
+    // return response.data;
+    try {
+      const response = await axiosInstance.post(`/orders`, orderDetails, {
+        headers: { 'content-type': 'application/json' },
+      });
+      console.log('createOrderAsync', response);
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+    }
   }
 )
 
@@ -47,8 +65,9 @@ export const orderSlice = createSlice({
       })
       .addCase(createOrderAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.currentOrder = action.payload;
-        state.orders.push(action.payload);
+        console.log('createOrderAsyncPayload', action.payload);
+        state.currentOrder = action.payload.data;
+        state.orders.push(action.payload.data);
       })
       .addCase(updateOrderAsync.pending, (state) => {
         state.status = 'loading';
@@ -57,7 +76,7 @@ export const orderSlice = createSlice({
         state.status = 'idle';
         const index = state.orders.findIndex((order) => order.id === action.payload.id)
         state.orders[index] = action.payload;
-      }) 
+      })
       .addCase(fetchAllOrdersAsync.pending, (state) => {
         state.status = 'loading';
       })

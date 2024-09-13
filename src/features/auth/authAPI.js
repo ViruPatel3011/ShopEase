@@ -18,8 +18,6 @@ export async function checkUser(loginInfo) {
     const response = await axiosInstance.post('/auth/login', loginInfo, {
         headers: { 'content-type': 'application/json' },
     });
-    console.log('response' , response);
-    console.log("Request successful");
     return response;
 
 

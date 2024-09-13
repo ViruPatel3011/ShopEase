@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { checkUser, createUser, updateUser, signOut } from './authAPI';
 import { showToaster } from '../../utils/Toaster';
 import { ToasterType } from '../../app/constant';
 import axiosInstance from '../../helpers/axiosInstance';
+
+
 const initialState = {
     loggedInUser: null,
     status: 'idle',
@@ -12,9 +13,23 @@ const initialState = {
 
 export const createUserAsync = createAsyncThunk(
     'user/createUser',
-    async (userData) => {
-        const response = await createUser(userData);
-        return response.data;
+    async (userData, thunkAPI) => {
+        // const response = await createUser(userData);
+        // return response.data;
+        try {
+            const response = await axiosInstance.post("/auth/signup", userData);
+            if (response.data.success) {
+                return response.data;
+            } else {
+                return thunkAPI.rejectWithValue(await response.data);
+            }
+        } catch (error) {
+            if (error.response) {
+                return thunkAPI.rejectWithValue(error.response.data);
+            } else {
+                return thunkAPI.rejectWithValue({ message: error.message });
+            }
+        }
     }
 );
 
@@ -40,16 +55,29 @@ export const checkUserAsync = createAsyncThunk(
 
 export const updateUserAsync = createAsyncThunk(
     'user/updateUser',
-    async (updateInfo) => {
-        const response = await updateUser(updateInfo);
-        return response.data;
+    async (updateInfo, thunkAPI) => {
+        try {
+            const response = await axiosInstance.patch("/users/", updateInfo.id);
+            if (response.data.success) {
+                return response.data;
+            } else {
+                return thunkAPI.rejectWithValue(await response.data);
+            }
+        } catch (error) {
+            if (error.response) {
+                return thunkAPI.rejectWithValue(error.response.data);
+            } else {
+                return thunkAPI.rejectWithValue({ message: error.message });
+            }
+        }
     }
 );
+
 export const signOutAsync = createAsyncThunk(
     'user/signOut',
-    async (updateInfo) => {
-        const response = await signOut(updateInfo);
-        return response.data;
+    async () => {
+        return { data: 'success' };
+
     }
 );
 
@@ -70,7 +98,7 @@ export const authSlice = createSlice({
             .addCase(createUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUser = action.payload.data;
-                showToaster(ToasterType.Success, 'User created successfully');
+                showToaster(ToasterType.Success, action.payload.message);
 
             })
             .addCase(checkUserAsync.pending, (state) => {
@@ -78,14 +106,12 @@ export const authSlice = createSlice({
             })
             .addCase(checkUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                console.log("ActionPayload", action.payload.data)
                 state.loggedInUser = action.payload.data;
                 showToaster(ToasterType.Success, action.payload.message);
 
             })
             .addCase(checkUserAsync.rejected, (state, action) => {
                 state.status = 'idle';
-                console.log("Action:", action.payload.message)
                 state.error = action.payload.message;
             })
             .addCase(updateUserAsync.pending, (state) => {
@@ -93,7 +119,7 @@ export const authSlice = createSlice({
             })
             .addCase(updateUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.loggedInUser = action.payload;
+                state.loggedInUser = action.payload.data;
             })
             .addCase(signOutAsync.pending, (state) => {
                 state.status = 'loading';
@@ -102,7 +128,6 @@ export const authSlice = createSlice({
                 state.status = 'idle';
                 state.loggedInUser = null;
                 showToaster(ToasterType.Success, 'SignOut successfully');
-
             })
 
     },

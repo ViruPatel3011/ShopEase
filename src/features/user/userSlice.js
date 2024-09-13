@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchLoggedInUserOrders } from './userAPI';
-import { updateUser, fetchLoggedInUser } from './userAPI';
+import axiosInstance from '../../helpers/axiosInstance';
 
 const initialState = {
   status: 'idle',
@@ -20,17 +20,46 @@ export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
 
 export const fetchLoggedInUserAsync = createAsyncThunk(
   'user/fetchLoggedInUser',
-  async (userId) => {
-    const response = await fetchLoggedInUser(userId);
-    return response.data;
+  async (userId,thunkAPI) => {
+    // const response = await fetchLoggedInUser(userId);
+    // return response.data;
+    try {
+      const response = await axiosInstance.get(`/users/${userId}`);
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+    }
   }
 );
 
 export const updateUserAsync = createAsyncThunk(
   'user/updateUser',
-  async (updateInfo) => {
-    const response = await updateUser(updateInfo);
-    return response.data;
+  async (updateInfo,thunkAPI) => {
+
+    try {
+      const response = await axiosInstance.patch(`/users/${updateInfo.id}`, updateInfo, {
+        headers: { 'content-type': 'application/json' },
+      });
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+    }
   }
 );
 
@@ -45,20 +74,20 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userOrders = action.payload;
+        state.userOrders = action.payload.data;
       }).addCase(updateUserAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userOrders = action.payload;
+        state.userOrders = action.payload.data;
       })
       .addCase(fetchLoggedInUserAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchLoggedInUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userInfo = action.payload;
+        state.userInfo = action.payload.data;
       })
   },
 });
