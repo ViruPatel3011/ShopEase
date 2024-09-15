@@ -7,12 +7,13 @@ import { Link } from 'react-router-dom';
 
 export function UserOrders() {
     const dispatch = useDispatch();
-    const user = useSelector(selectUserInfo);
+    const userInfo = useSelector(selectUserInfo);
     const orders = useSelector(selectUserOrders);
+    console.log("orders", orders)
 
     useEffect(() => {
-        if (user) {
-            dispatch(fetchLoggedInUserOrdersAsync(user.id));
+        if (userInfo) {
+            dispatch(fetchLoggedInUserOrdersAsync(userInfo.id));
         }
     }, [])
 
@@ -95,22 +96,22 @@ export function UserOrders() {
 
                                             <div className="min-w-0 flex-auto">
                                                 <p className="text-sm font-semibold leading-6 text-gray-900">
-                                                    {order?.selectAddress?.[0]?.name}
+                                                    {order?.selectAddress?.name}
                                                 </p>
                                                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                    {order?.selectAddress?.[0]?.street}
+                                                    {order?.selectAddress?.street}
                                                 </p>
                                                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                    {order?.selectAddress?.[0]?.pinCode}
+                                                    {order?.selectAddress?.pinCode}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="hidden sm:flex sm:flex-col sm:items-end">
                                             <p className="text-sm leading-6 text-gray-900">
-                                                Phone: {order?.selectAddress?.[0]?.phone}
+                                                Phone: {order?.selectAddress?.phone}
                                             </p>
                                             <p className="text-sm leading-6 text-gray-500">
-                                                {order?.selectAddress?.[0]?.city}
+                                                {order?.selectAddress?.city}
                                             </p>
                                         </div>
                                     </div>

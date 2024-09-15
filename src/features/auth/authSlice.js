@@ -5,7 +5,7 @@ import axiosInstance from '../../helpers/axiosInstance';
 
 
 const initialState = {
-    loggedInUser: null,
+    loggedInUser: null, // This should only contain user identity ==> 'id'/'role'
     status: 'idle',
     error: null
 
@@ -18,6 +18,7 @@ export const createUserAsync = createAsyncThunk(
         // return response.data;
         try {
             const response = await axiosInstance.post("/auth/signup", userData);
+            console.log("response",response)
             if (response.data.success) {
                 return response.data;
             } else {
@@ -38,6 +39,7 @@ export const checkUserAsync = createAsyncThunk(
     async (loginInfo, thunkAPI) => {
         try {
             const response = await axiosInstance.post("/auth/login", loginInfo);
+            console.log("response",response)
             if (response.data.success) {
                 return response.data;
             } else {
@@ -53,27 +55,6 @@ export const checkUserAsync = createAsyncThunk(
     }
 );
 
-export const updateUserAsync = createAsyncThunk(
-    'user/updateUser',
-    async (updateInfo, thunkAPI) => {
-        try {
-            console.log('updateInfo', updateInfo);
-            const response = await axiosInstance.patch(`/users/${updateInfo.id}`, updateInfo);
-            console.log('response', response);
-            if (response.data.success) {
-                return response.data;
-            } else {
-                return thunkAPI.rejectWithValue(await response.data);
-            }
-        } catch (error) {
-            if (error.response) {
-                return thunkAPI.rejectWithValue(error.response.data);
-            } else {
-                return thunkAPI.rejectWithValue({ message: error.message });
-            }
-        }
-    }
-);
 
 export const signOutAsync = createAsyncThunk(
     'user/signOut',
@@ -109,20 +90,13 @@ export const authSlice = createSlice({
             .addCase(checkUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUser = action.payload.data;
+                console.log("checkUserAsyncPayload:",action.payload.data)
                 showToaster(ToasterType.Success, action.payload.message);
 
             })
             .addCase(checkUserAsync.rejected, (state, action) => {
                 state.status = 'idle';
                 state.error = action.payload.message;
-            })
-            .addCase(updateUserAsync.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(updateUserAsync.fulfilled, (state, action) => {
-                state.status = 'idle';
-                console.log("updateUserAsyncPayload:", action.payload.data)
-                state.loggedInUser = action.payload.data;
             })
             .addCase(signOutAsync.pending, (state) => {
                 state.status = 'loading';

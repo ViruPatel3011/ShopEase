@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../features/cart/cartSlice';
 import { useForm } from 'react-hook-form';
 import { deleteCartAsync, updateCartAsync } from '../features/cart/cartSlice';
-import { updateUserAsync } from "../features/auth/authSlice";
+import { updateUserAsync } from "../features/user/userSlice";
 import { selectUserInfo } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/orders/orderSlice';
 import { discountedPrice } from '../app/constant';
@@ -14,7 +14,7 @@ import { ToasterType } from '../app/constant';
 
 function Checkout() {
     const dispatch = useDispatch();
-    const user = useSelector(selectUserInfo);
+    const userInfo = useSelector(selectUserInfo);
     const {
         register,
         handleSubmit,
@@ -40,7 +40,7 @@ function Checkout() {
     }
 
     const handleAddress = (e) => {
-        setSelectedAddress(user.addresses[e.target.value])
+        setSelectedAddress(userInfo.addresses[e.target.value])
     }
 
     const handlePayment = (e) => {
@@ -49,7 +49,7 @@ function Checkout() {
 
     const handleOrder = (e) => {
         if (selectAddress && paymentMethod) {
-            const order = { cartItems, totalAmount, user: user.id, totalItems, selectAddress, paymentMethod, status: 'pending' }
+            const order = { cartItems, totalAmount, user: userInfo.id, totalItems, selectAddress, paymentMethod, status: 'pending' }
             dispatch(createOrderAsync(order));
         }
         else {
@@ -70,7 +70,7 @@ function Checkout() {
                         <form className='bg-white px-5 mt-12 py-12'
                             noValidate
                             onSubmit={handleSubmit((data) => {
-                                dispatch(updateUserAsync({ ...user, addresses: [...user.addresses, data] }));
+                                dispatch(updateUserAsync({ ...userInfo, addresses: [...userInfo.addresses, data] }));
                                 reset();
                             })}>
                             <div className="space-y-12">
@@ -257,7 +257,7 @@ function Checkout() {
                                     </p>
 
                                     <ul className="divide-y divide-gray-100">
-                                        {user.addresses.map((address, index) => (
+                                        {userInfo.addresses.map((address, index) => (
                                             <li key={index} className="flex justify-between gap-x-6 py-5">
                                                 <div className="flex min-w-0 gap-x-4">
                                                     <input
