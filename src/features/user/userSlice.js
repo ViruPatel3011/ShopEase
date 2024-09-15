@@ -4,7 +4,6 @@ import axiosInstance from '../../helpers/axiosInstance';
 
 const initialState = {
   status: 'idle',
-  userOrders: [],
   userInfo: null, // this info will be used in case of detailed user info, while auth will 
   // only be used for loggedInUser id etc checks
 
@@ -20,7 +19,7 @@ export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
 
 export const fetchLoggedInUserAsync = createAsyncThunk(
   'user/fetchLoggedInUser',
-  async (userId,thunkAPI) => {
+  async (userId, thunkAPI) => {
     // const response = await fetchLoggedInUser(userId);
     // return response.data;
     try {
@@ -42,7 +41,7 @@ export const fetchLoggedInUserAsync = createAsyncThunk(
 
 export const updateUserAsync = createAsyncThunk(
   'user/updateUser',
-  async (updateInfo,thunkAPI) => {
+  async (updateInfo, thunkAPI) => {
 
     try {
       const response = await axiosInstance.patch(`/users/${updateInfo.id}`, updateInfo, {
@@ -74,13 +73,15 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userOrders = action.payload.data;
-      }).addCase(updateUserAsync.pending, (state) => {
+        console.log("fetchLoggedInUserOrdersAsync", action.payload.data)
+        state.userInfo.orders = action.payload.data;
+      })
+      .addCase(updateUserAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userOrders = action.payload.data;
+        state.userInfo = action.payload.data;
       })
       .addCase(fetchLoggedInUserAsync.pending, (state) => {
         state.status = 'loading';
@@ -92,7 +93,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUserOrders = (state) => state.user.userOrders;
+export const selectUserOrders = (state) => state.user.userInfo.orders;
 export const selectUserInfo = (state) => state.user.userInfo;
 
 export default userSlice.reducer;
