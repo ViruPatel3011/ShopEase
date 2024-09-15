@@ -14,6 +14,7 @@ export default function AdminOrders() {
     const [page, setPage] = useState(1);
     const dispatch = useDispatch();
     const orders = useSelector(selectOrders);
+    console.log("AdminOrders:",orders);
     const totalOrders = useSelector(selectTotalOrders);
     const [editableOrderId, setEditableOrderId] = useState(-1);
     const [sort, setSort] = useState({});
@@ -111,7 +112,7 @@ export default function AdminOrders() {
                             </thead>
 
                             <tbody className="text-gray-600 text-sm font-light">
-                                {orders?.map((order, index) => (
+                                {orders && orders?.map((order, index) => (
                                     <tr className="border-b border-gray-200 hover:bg-gray-100" key={index}>
                                         <td className="py-3 px-6 text-left whitespace-nowrap">
                                             <div className="flex items-center">
@@ -124,14 +125,14 @@ export default function AdminOrders() {
                                                 <div className="flex items-center" key={index}>
                                                     <div className="mr-2">
                                                         <img
-                                                            alt={item.title}
+                                                            alt={item.product.title}
                                                             className="w-6 h-6 rounded-full"
-                                                            src={item.thumbnail}
+                                                            src={item.product.thumbnail}
                                                         />
                                                     </div>
                                                     <span>
-                                                        {item.title} - #{item.quantity} - $
-                                                        {discountedPrice(item)}
+                                                        {item.product.title} - #{item.quantity} - $
+                                                        {discountedPrice(item.product)}
                                                     </span>
                                                 </div>
                                             ))}

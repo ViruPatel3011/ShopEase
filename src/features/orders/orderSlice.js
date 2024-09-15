@@ -45,7 +45,9 @@ export const updateOrderAsync = createAsyncThunk(
 export const fetchAllOrdersAsync = createAsyncThunk(
   'order/fetchAllOrders',
   async ({ sort, pagination }) => {
+    // Remaining to convert it in axiosInstance pattern
     const response = await fetchAllOrders(sort, pagination);
+    console.log("response",response);
     return response.data;
   }
 )
@@ -82,7 +84,7 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.orders = action.payload.orders;
+        state.orders = action.payload.orders.data;
         state.totalOrders = action.payload.totalOrders;
       })
   },
