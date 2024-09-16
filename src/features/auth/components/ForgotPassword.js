@@ -1,18 +1,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-
+import { ToasterType } from '../../../app/constant';
+import { showToaster } from '../../../utils/Toaster';
 
 export default function ForgotPasswod() {
-
     const {
         register,
         reset,
         handleSubmit,
         formState: { errors },
     } = useForm();
-
-
 
     return (
         <>
@@ -35,6 +33,8 @@ export default function ForgotPasswod() {
                         className="space-y-6"
                         noValidate
                         onSubmit={handleSubmit((data) => {
+                            console.log("data:",data)
+                            showToaster(ToasterType.Success,"Password recovery email sent successfully !!");
                             reset()
                         })}>
                         <div>
@@ -68,7 +68,6 @@ export default function ForgotPasswod() {
                             </button>
                         </div>
                     </form>
-
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Send me back to{' '}
                         <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">

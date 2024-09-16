@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { updateOrder, fetchAllOrders } from './orderAPI';
 import axiosInstance from '../../helpers/axiosInstance';
 
 const initialState = {
@@ -12,13 +11,10 @@ const initialState = {
 export const createOrderAsync = createAsyncThunk(
   'order/createOrder',
   async (orderDetails, thunkAPI) => {
-    // const response = await createOrder(orderDetails);
-    // return response.data;
     try {
       const response = await axiosInstance.post(`/orders`, orderDetails, {
         headers: { 'content-type': 'application/json' },
       });
-      console.log('createOrderAsync', response);
       if (response.data.success) {
         return response.data;
       } else {
@@ -36,19 +32,52 @@ export const createOrderAsync = createAsyncThunk(
 
 export const updateOrderAsync = createAsyncThunk(
   'order/updateOrder',
-  async (updatedOrder) => {
-    const response = await updateOrder(updatedOrder);
-    return response.data;
+  async (updatedOrder,thunkAPI) => {
+    try {
+      const response = await axiosInstance.patch(`/orders/${updatedOrder.id}`, updatedOrder, {
+        headers: { 'content-type': 'application/json' },
+      });
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+    }
   }
 )
 
 export const fetchAllOrdersAsync = createAsyncThunk(
   'order/fetchAllOrders',
-  async ({ sort, pagination }) => {
-    // Remaining to convert it in axiosInstance pattern
-    const response = await fetchAllOrders(sort, pagination);
-    console.log("response",response);
-    return response.data;
+  async ({ sort, pagination,thunkAPI }) => {
+    try {
+      let queryString = '';
+
+      for (let key in sort) {
+        queryString += `${key}=${sort[key]}&`;
+      }
+      for (let key in pagination) {
+        queryString += `${key}=${pagination[key]}&`;
+      }
+
+      const response = await axiosInstance.get(`/orders?${queryString}`)
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+    }
   }
 )
 
@@ -67,7 +96,6 @@ export const orderSlice = createSlice({
       })
       .addCase(createOrderAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log('createOrderAsyncPayload', action.payload);
         state.currentOrder = action.payload.data;
         state.orders.push(action.payload.data);
       })
@@ -76,16 +104,16 @@ export const orderSlice = createSlice({
       })
       .addCase(updateOrderAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index = state.orders.findIndex((order) => order.id === action.payload.id)
-        state.orders[index] = action.payload;
+        const index = state.orders.findIndex((order) => order.id === action.payload.data.id)
+        state.orders[index] = action.payload.data;
       })
       .addCase(fetchAllOrdersAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchAllOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.orders = action.payload.orders.data;
-        state.totalOrders = action.payload.totalOrders;
+        state.orders = action.payload.data.doc;
+        state.totalOrders = action.payload.data.totalCount;
       })
   },
 });

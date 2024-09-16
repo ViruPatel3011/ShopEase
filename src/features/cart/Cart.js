@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { selectItems, updateCartAsync, deleteCartAsync, selectCartStatus } from './cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { discountedPrice } from '../../app/constant';
@@ -10,9 +10,7 @@ import Modal from '../common/Modal';
 export function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectItems);
-  console.log('cartItems' , cartItems);
   const status = useSelector(selectCartStatus);
-  // const totalAmount = 40
   const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item?.product) * item.quantity + amount, 0)
   const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
   const [openModal, setOpenModal] = useState(null);

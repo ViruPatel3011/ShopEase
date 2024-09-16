@@ -14,11 +14,8 @@ const initialState = {
 export const createUserAsync = createAsyncThunk(
     'user/createUser',
     async (userData, thunkAPI) => {
-        // const response = await createUser(userData);
-        // return response.data;
         try {
             const response = await axiosInstance.post("/auth/signup", userData);
-            console.log("response",response)
             if (response.data.success) {
                 return response.data;
             } else {
@@ -39,7 +36,6 @@ export const checkUserAsync = createAsyncThunk(
     async (loginInfo, thunkAPI) => {
         try {
             const response = await axiosInstance.post("/auth/login", loginInfo);
-            console.log("response",response)
             if (response.data.success) {
                 return response.data;
             } else {
@@ -55,7 +51,6 @@ export const checkUserAsync = createAsyncThunk(
     }
 );
 
-
 export const signOutAsync = createAsyncThunk(
     'user/signOut',
     async () => {
@@ -63,7 +58,6 @@ export const signOutAsync = createAsyncThunk(
 
     }
 );
-
 
 export const authSlice = createSlice({
     name: 'user',
@@ -90,7 +84,6 @@ export const authSlice = createSlice({
             .addCase(checkUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.loggedInUser = action.payload.data;
-                console.log("checkUserAsyncPayload:",action.payload.data)
                 showToaster(ToasterType.Success, action.payload.message);
 
             })
@@ -114,6 +107,5 @@ export const selectLoggedInUser = (state) => state.auth.loggedInUser;
 export const selectError = (state) => state.auth.error;
 
 export const { increment } = authSlice.actions;
-
 
 export default authSlice.reducer;

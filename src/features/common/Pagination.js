@@ -1,8 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { ITEMS_PER_PAGE } from "../../app/constant";
 
 export function Pagination({ page, setPage, handlePage, totalItems }) {
-    const totalPages = Math.ceil(totalItems / 10);
-
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    console.log('totalPages' , totalPages);
+    console.log('totalItems', totalItems);
     const getPageNumbers = () => {
         let pages = [];
 
@@ -43,11 +45,11 @@ export function Pagination({ page, setPage, handlePage, totalItems }) {
                     <p className="text-sm text-gray-700">
                         Showing{' '}
                         <span className="font-medium">
-                            {(page - 1) * 10 + 1}
+                            {(page - 1) * ITEMS_PER_PAGE + 1}
                         </span>{' '}
                         to{' '}
                         <span className="font-medium">
-                            {page * 10 > totalItems ? totalItems : page * 10}
+                            {page * ITEMS_PER_PAGE > totalItems ? totalItems : page * ITEMS_PER_PAGE}
                         </span>{' '}
                         of <span className="font-medium">{totalItems}</span> results
                     </p>

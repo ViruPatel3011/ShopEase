@@ -9,7 +9,6 @@ export function UserOrders() {
     const dispatch = useDispatch();
     const userInfo = useSelector(selectUserInfo);
     const orders = useSelector(selectUserOrders);
-    console.log("orders", orders)
 
     useEffect(() => {
         if (userInfo) {

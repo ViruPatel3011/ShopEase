@@ -52,6 +52,7 @@ export default function ProductList() {
 
   const products = useSelector(selectAllProducts);
   const totalItems = useSelector(selectTotalItems);
+  console.log('totalItems', totalItems);
   const status = useSelector(selectProductListStatus);
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
@@ -96,7 +97,7 @@ export default function ProductList() {
   }
 
   useEffect(() => {
-    const pagination = { _page: page, _per_page: ITEMS_PER_PAGE }
+    const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
     dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }))
   }, [dispatch, filter, sort, page])
 
@@ -313,7 +314,6 @@ function DesktopFilter({ filters, handleFilter }) {
 }
 
 
-
 function ProductGrid({ products, status }) {
   return (
     <>
@@ -332,8 +332,8 @@ function ProductGrid({ products, status }) {
                 visible={true}
               />
             ) : null}
-            {products?.map((product) => (
-              <Link to={`/product-detail/${product.id}`} key={product.id}>
+            {products && products?.map((product,index) => (
+              <Link to={`/product-detail/${product.id}`} key={index}>
                 <div className="group relative border-solid border-2 p-2 border-gray-200">
                   <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
                     <img

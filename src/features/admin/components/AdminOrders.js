@@ -14,7 +14,6 @@ export default function AdminOrders() {
     const [page, setPage] = useState(1);
     const dispatch = useDispatch();
     const orders = useSelector(selectOrders);
-    console.log("AdminOrders:",orders);
     const totalOrders = useSelector(selectTotalOrders);
     const [editableOrderId, setEditableOrderId] = useState(-1);
     const [sort, setSort] = useState({});

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchProductsByFilters, updateProduct } from './ProductAPI';
 import axiosInstance from '../../helpers/axiosInstance';
 import { ToasterType } from '../../app/constant';
 import { showToaster } from '../../utils/Toaster';
@@ -20,7 +19,6 @@ export const fetchProductByIdAsync = createAsyncThunk(
     // return response.data;
     try {
       const response = await axiosInstance.get(`/products/${id}`);
-      console.log('fetchProductByIdAsync', response);
       if (response.data) {
         return response.data; // Return the fetched brands data on success
       } else {
@@ -38,10 +36,41 @@ export const fetchProductByIdAsync = createAsyncThunk(
 
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   'product/fetchProductsByFilters',
-  async ({ filter, sort, pagination }) => {
-    const response = await fetchProductsByFilters(filter, sort, pagination);
-    // The value we return becomes the `fulfilled` action payload
-    return response;
+  async ({ filter, sort, pagination, thunkAPI }) => {
+    // const response = await fetchProductsByFilters(filter, sort, pagination);
+    // // The value we return becomes the `fulfilled` action payload
+    // return response;
+    try {
+      let queryString = '';
+      for (let key in filter) {
+        const categoryValues = filter[key];
+        if (categoryValues.length) {
+          const lastCategoryValue = categoryValues[categoryValues.length - 1]
+          queryString += `${key}=${lastCategoryValue}&`
+        }
+      }
+      for (let key in sort) {
+        queryString += `${key}=${sort[key]}&`
+      }
+
+      for (let key in pagination) {
+        queryString += `${key}=${pagination[key]}&`
+      }
+
+      const response = await axiosInstance.get(`/products?${queryString}`);
+      console.log('response', response);
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+    }
   }
 );
 
@@ -50,7 +79,6 @@ export const fetchAllCategoriesAsync = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axiosInstance.get('/categories');
-      console.log('fetchAllCategoriesAsync', response);
       if (response.data) {
         return response.data; // Return the fetched brands data on success
       } else {
@@ -71,7 +99,6 @@ export const fetchAllBrandsAsync = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axiosInstance.get('/brands');
-      console.log('fetchAllBrandsAsync', response);
       if (response.data) {
         return response.data; // Return the fetched brands data on success
       } else {
@@ -91,11 +118,8 @@ export const fetchAllBrandsAsync = createAsyncThunk(
 export const createProductAsync = createAsyncThunk(
   'product/createProduct',
   async (product, thunkAPI) => {
-    // const response = await createProduct(product);
-    // return response.data;
     try {
       const response = await axiosInstance.post('/products', product);
-      console.log('createProductAsync', response);
       if (response.data) {
         return response.data; // Return the fetched brands data on success
       } else {
@@ -113,9 +137,23 @@ export const createProductAsync = createAsyncThunk(
 
 export const updateProductAsync = createAsyncThunk(
   'product/updateProduct',
-  async (update) => {
-    const response = await updateProduct(update);
-    return response.data;
+  async (update, thunkAPI) => {
+    try {
+      const response = await axiosInstance.patch(`/products/${update.id}`, update, {
+        headers: { 'content-type': 'application/json' },
+      });
+      if (response.data) {
+        return response.data; // Return the fetched brands data on success
+      } else {
+        return thunkAPI.rejectWithValue(response.data); // Handle failure response
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data); // Handle HTTP errors
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message }); // Handle network or other errors
+      }
+    }
   }
 );
 
@@ -135,8 +173,9 @@ export const productSlice = createSlice({
       })
       .addCase(fetchProductsByFiltersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.products = action.payload.data;
-        state.totalItems = action.payload.items;
+        console.log('fetchProductsByFiltersAsyncPayload', action.payload.data.doc);
+        state.products = action.payload.data.doc;
+        state.totalItems = action.payload.data.totalCount;
       })
       .addCase(fetchAllCategoriesAsync.pending, (state) => {
         state.status = 'loading';
@@ -157,7 +196,6 @@ export const productSlice = createSlice({
       })
       .addCase(fetchProductByIdAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log("fetchProductByIdAsyncPayload:", action.payload.data)
         state.selectedProduct = action.payload.data;
       })
       .addCase(createProductAsync.pending, (state) => {
@@ -165,7 +203,6 @@ export const productSlice = createSlice({
       })
       .addCase(createProductAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log('createProductAsyncPayload', action.payload.data);
         state.products.push(action.payload.data);
         showToaster(ToasterType.Success, action.payload.message);
       })
@@ -174,10 +211,12 @@ export const productSlice = createSlice({
       })
       .addCase(updateProductAsync.fulfilled, (state, action) => {
         state.status = 'idle';
+        console.log('updateProductAsyncP', action.payload.data);
         const index = state.products.findIndex((product) =>
-          product.id === action.payload.id);
-        state.products[index] = action.payload;
-        state.selectedProduct = action.payload;
+          product.id === action.payload.data.id);
+        state.products[index] = action.payload.data;
+        state.selectedProduct = action.payload.data;
+        showToaster(ToasterType.Success, action.payload.message);
 
       });
   },

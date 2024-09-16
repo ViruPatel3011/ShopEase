@@ -48,7 +48,6 @@ export default function ProductDetail() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const productSelected = useSelector(selectedProductById);
-  console.log('productSelected' , productSelected);
   const items = useSelector(selectItems);
   const status = useSelector(selectProductListStatus);
   const user = useSelector(selectLoggedInUser);

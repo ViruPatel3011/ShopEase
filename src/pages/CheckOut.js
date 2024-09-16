@@ -27,7 +27,6 @@ function Checkout() {
 
     const cartItems = useSelector(selectItems);
     const currentOrder = useSelector(selectCurrentOrder);
-    console.log('currentOrder' , currentOrder);
     const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item.product) * item.quantity + amount, 0)
     const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
 

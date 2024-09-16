@@ -8,7 +8,7 @@ import {
   selectedProductById
 } from '../../product/ProductSlice';
 import { useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '../../common/Modal';
 
@@ -28,6 +28,8 @@ export default function ProductForm() {
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);
   const selectedProduct = useSelector(selectedProductById);
+
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     const product = { ...selectedProduct };
@@ -82,11 +84,11 @@ export default function ProductForm() {
           product.id = params.id;
           product.rating = selectedProduct.rating || 0;
           dispatch(updateProductAsync(product));
+          navigate("/admin");
           reset();
         } else {
           dispatch(createProductAsync(product));
           reset();
-          //TODO:  on product successfully added clear fields and show a message
         }
 
       })}>
