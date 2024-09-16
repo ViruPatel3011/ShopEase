@@ -6,7 +6,6 @@ export default function UserProfilePage() {
     return (
         <div>
             <Navbar>
-                <h1 className='mx-auto text-2xl font-semibold'>My Profile</h1>
                 <UserProfile></UserProfile>
             </Navbar>
         </div>

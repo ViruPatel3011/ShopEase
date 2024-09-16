@@ -88,6 +88,7 @@ export default function ProductDetail() {
           visible={true}
         />
       ) : null}
+      
       {productSelected && (
         <div className="pt-6">
           <nav aria-label="Breadcrumb">

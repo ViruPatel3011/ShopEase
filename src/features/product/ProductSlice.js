@@ -15,8 +15,6 @@ const initialState = {
 export const fetchProductByIdAsync = createAsyncThunk(
   'product/fetchProductByIdAsync',
   async (id, thunkAPI) => {
-    // const response = await fetchProductById(id);
-    // return response.data;
     try {
       const response = await axiosInstance.get(`/products/${id}`);
       if (response.data) {
@@ -36,10 +34,7 @@ export const fetchProductByIdAsync = createAsyncThunk(
 
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   'product/fetchProductsByFilters',
-  async ({ filter, sort, pagination, thunkAPI }) => {
-    // const response = await fetchProductsByFilters(filter, sort, pagination);
-    // // The value we return becomes the `fulfilled` action payload
-    // return response;
+  async ({ filter, sort, pagination, admin, thunkAPI }) => {
     try {
       let queryString = '';
       for (let key in filter) {
@@ -57,6 +52,9 @@ export const fetchProductsByFiltersAsync = createAsyncThunk(
         queryString += `${key}=${pagination[key]}&`
       }
 
+      if (admin) {
+        queryString += `admin=true`
+      }
       const response = await axiosInstance.get(`/products?${queryString}`);
       console.log('response', response);
       if (response.data.success) {
@@ -114,7 +112,6 @@ export const fetchAllBrandsAsync = createAsyncThunk(
   }
 )
 
-
 export const createProductAsync = createAsyncThunk(
   'product/createProduct',
   async (product, thunkAPI) => {
@@ -156,7 +153,6 @@ export const updateProductAsync = createAsyncThunk(
     }
   }
 );
-
 
 export const productSlice = createSlice({
   name: 'product',

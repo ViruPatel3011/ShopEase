@@ -274,8 +274,6 @@ function DesktopFilter({ filters, handleFilter }) {
     <>
       {/* Filters */}
       <form className="hidden lg:block">
-
-
         {filters.map((section) => (
           <Disclosure key={section.id} as="div" className="border-b border-gray-200 py-6 px-4">
             <h3 className="-my-3 flow-root">
@@ -319,7 +317,7 @@ function ProductGrid({ products, status }) {
     <>
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {status === 'loading' ? (
               <Grid
                 height="80"

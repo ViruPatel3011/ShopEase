@@ -35,6 +35,7 @@ export default function ProductForm() {
     const product = { ...selectedProduct };
     product.deleted = true;
     dispatch(updateProductAsync(product));
+    navigate("/admin");
   }
 
   useEffect(() => {
@@ -89,6 +90,7 @@ export default function ProductForm() {
         } else {
           dispatch(createProductAsync(product));
           reset();
+          navigate("/admin");
         }
 
       })}>
@@ -99,7 +101,7 @@ export default function ProductForm() {
             </h2>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              {selectedProduct?.deleted && <h2 className="text-red-500 sm:col-span-6">This product is deleted</h2>}
+              {selectedProduct && selectedProduct?.deleted && <h2 className="text-red-500 sm:col-span-6">This product is deleted</h2>}
               <div className="sm:col-span-6">
                 <label
                   htmlFor="title"

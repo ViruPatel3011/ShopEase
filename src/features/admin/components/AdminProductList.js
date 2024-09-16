@@ -94,7 +94,7 @@ function AdminProductList() {
 
     useEffect(() => {
         const pagination = { _page: page, _per_page: ITEMS_PER_PAGE }
-        dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }))
+        dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination, admin: true }))
     }, [dispatch, filter, sort, page])
 
     useEffect(() => {
@@ -400,7 +400,7 @@ function ProductGrid({ products }) {
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-                <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                     {products.map((product, index) => (
                         <div key={index}>
                             <Link to={`/product-detail/${product.id}`} key={index}>

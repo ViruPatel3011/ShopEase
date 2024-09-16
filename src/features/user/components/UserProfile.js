@@ -58,7 +58,6 @@ export function UserProfile() {
             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
               <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
                 Name:  {userInfo?.addresses[0]?.name ? userInfo?.addresses[0]?.name : "Guest User"}
-                {/* Name:  {"Guest User"} */}
               </h1>
               <h3 className="text-xl my-5 font-bold tracking-tight text-red-900">
                 Email address:{userInfo.email}

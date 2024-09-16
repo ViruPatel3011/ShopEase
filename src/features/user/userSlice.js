@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchLoggedInUserOrders } from './userAPI';
 import axiosInstance from '../../helpers/axiosInstance';
 
 const initialState = {
@@ -11,9 +10,21 @@ const initialState = {
 
 export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   'user/fetchLoggedInUserOrders',
-  async (userId) => {
-    const response = await fetchLoggedInUserOrders(userId);
-    return response.data;
+  async (userId,thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(`/orders/user/${userId}`);
+      if (response.data.success) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(await response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      } else {
+        return thunkAPI.rejectWithValue({ message: error.message });
+      }
+    }
   }
 )
 
@@ -73,6 +84,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
+        console.log('fetchLoggedInUserOrdersAsyncP', action.payload.data);
         state.userInfo.orders = action.payload.data;
       })
       .addCase(updateUserAsync.pending, (state) => {
