@@ -5,7 +5,7 @@ import axiosInstance from '../../helpers/axiosInstance';
 
 
 const initialState = {
-    loggedInUser: null, // This should only contain user identity ==> 'id'/'role'
+    loggedInUserToken: null, // This should only contain user identity ==> 'id'/'role'
     status: 'idle',
     error: null
 
@@ -74,7 +74,7 @@ export const authSlice = createSlice({
             })
             .addCase(createUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.loggedInUser = action.payload.data;
+                state.loggedInUserToken = action.payload.data;
                 showToaster(ToasterType.Success, action.payload.message);
 
             })
@@ -83,7 +83,7 @@ export const authSlice = createSlice({
             })
             .addCase(checkUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.loggedInUser = action.payload.data;
+                state.loggedInUserToken = action.payload.data;
                 showToaster(ToasterType.Success, action.payload.message);
 
             })
@@ -96,14 +96,14 @@ export const authSlice = createSlice({
             })
             .addCase(signOutAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                state.loggedInUser = null;
+                state.loggedInUserToken = null;
                 showToaster(ToasterType.Success, 'SignOut successfully');
             })
 
     },
 });
 
-export const selectLoggedInUser = (state) => state.auth.loggedInUser;
+export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectError = (state) => state.auth.error;
 
 export const { increment } = authSlice.actions;

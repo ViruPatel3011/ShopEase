@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductByIdAsync, selectedProductById, selectProductListStatus } from '../ProductSlice';
 import { useParams } from 'react-router-dom';
 import { addToCartAsync, selectItems } from '../../cart/cartSlice';
-import { selectLoggedInUser } from "../../auth/authSlice"
 import { discountedPrice } from '../../../app/constant';
 import { Grid } from 'react-loader-spinner';
 import { showToaster } from '../../../utils/Toaster';
@@ -50,7 +49,6 @@ export default function ProductDetail() {
   const productSelected = useSelector(selectedProductById);
   const items = useSelector(selectItems);
   const status = useSelector(selectProductListStatus);
-  const user = useSelector(selectLoggedInUser);
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -63,8 +61,7 @@ export default function ProductDetail() {
     if (items.findIndex((item) => item.product.id === productSelected.id) < 0) {
       const newItem = {
         product: productSelected.id,
-        quantity: 1,
-        user: user.id,
+        quantity: 1
       };
       dispatch(addToCartAsync(newItem));
       showToaster(ToasterType.Success, 'Item added to Cart');

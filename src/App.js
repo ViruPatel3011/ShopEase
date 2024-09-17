@@ -14,7 +14,7 @@ import Protected from './features/auth/components/Protected';
 import ProtectedAdmin from './features/auth/components/ProtectedAdmin';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
-import { selectLoggedInUser } from './features/auth/authSlice';
+import { selectLoggedInUserToken } from './features/auth/authSlice';
 import PageNotFound from './pages/404';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import UserOrderPage from './pages/UserOrderPage';
@@ -138,12 +138,13 @@ const router = createBrowserRouter([
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector(selectLoggedInUserToken);
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchItemsByUserIdAsync(user.id))
-      dispatch(fetchLoggedInUserAsync(user.id))
+      dispatch(fetchItemsByUserIdAsync())
+      // We can get req.user by token on backend so no need to give in front-end
+      dispatch(fetchLoggedInUserAsync())
     }
   }, [dispatch, user])
 

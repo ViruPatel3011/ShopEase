@@ -31,9 +31,9 @@ export const addToCartAsync = createAsyncThunk(
 
 export const fetchItemsByUserIdAsync = createAsyncThunk(
   'cart/fetchItemsByUserId',
-  async (userId, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const response = await axiosInstance.get(`/cart?user=${userId}`);
+      const response = await axiosInstance.get(`/cart`);
       if (response.data.success) {
         return response.data;
       } else {
@@ -92,10 +92,10 @@ export const deleteCartAsync = createAsyncThunk(
 
 export const resetCartAsync = createAsyncThunk(
   'cart/resetCart',
-  async (userId, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       // Fetch items by userId
-      const fetchResponse = await thunkAPI.dispatch(fetchItemsByUserIdAsync(userId));
+      const fetchResponse = await thunkAPI.dispatch(fetchItemsByUserIdAsync());
       
       // Check if the fetch was successful
       if (fetchResponse.error) {
@@ -114,7 +114,7 @@ export const resetCartAsync = createAsyncThunk(
         }
       }
 
-      return { status: "Success", userId };
+      return { status: "Success"};
 
     } catch (error) {
       return thunkAPI.rejectWithValue({ message: error.message });

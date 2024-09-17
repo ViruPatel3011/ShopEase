@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchLoggedInUserOrdersAsync, selectUserOrders } from '../userSlice';
-import { selectUserInfo } from '../userSlice';
+import { fetchLoggedInUserOrdersAsync, selectUserOrders, selectUserOrdersStatus } from '../userSlice';
 import { Link } from 'react-router-dom';
+import { Grid } from 'react-loader-spinner';
 
 
 export function UserOrders() {
     const dispatch = useDispatch();
-    const userInfo = useSelector(selectUserInfo);
     const orders = useSelector(selectUserOrders);
+    const status = useSelector(selectUserOrdersStatus);
 
     useEffect(() => {
-        if (userInfo) {
-            dispatch(fetchLoggedInUserOrdersAsync(userInfo.id));
-        }
+        dispatch(fetchLoggedInUserOrdersAsync());
     }, [])
 
     return (
@@ -140,6 +138,19 @@ export function UserOrders() {
                     </div>
                 </>
             }
+
+            {status === 'loading' ? (
+                <Grid
+                    height="80"
+                    width="80"
+                    color="rgb(79, 70, 229) "
+                    ariaLabel="grid-loading"
+                    radius="12.5"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                />
+            ) : null}
         </div>
     );
 }

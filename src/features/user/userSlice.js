@@ -10,9 +10,9 @@ const initialState = {
 
 export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   'user/fetchLoggedInUserOrders',
-  async (userId,thunkAPI) => {
+  async (_,thunkAPI) => {
     try {
-      const response = await axiosInstance.get(`/orders/user/${userId}`);
+      const response = await axiosInstance.get(`/orders/own/`);
       if (response.data.success) {
         return response.data;
       } else {
@@ -30,11 +30,11 @@ export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
 
 export const fetchLoggedInUserAsync = createAsyncThunk(
   'user/fetchLoggedInUser',
-  async (userId, thunkAPI) => {
+  async (_, thunkAPI) => {
     // const response = await fetchLoggedInUser(userId);
     // return response.data;
     try {
-      const response = await axiosInstance.get(`/users/${userId}`);
+      const response = await axiosInstance.get(`/users/own`);
       if (response.data.success) {
         return response.data;
       } else {
@@ -105,6 +105,7 @@ export const userSlice = createSlice({
 });
 
 export const selectUserOrders = (state) => state.user.userInfo.orders;
+export const selectUserOrdersStatus = (state) => state.user.status;
 export const selectUserInfo = (state) => state.user.userInfo;
 
 export default userSlice.reducer;

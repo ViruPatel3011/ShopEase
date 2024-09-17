@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { selectLoggedInUser, signOutAsync } from '../authSlice';
+import { selectLoggedInUserToken, signOutAsync } from '../authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 function LogOut() {
     const dispatch = useDispatch();
-    const user=useSelector(selectLoggedInUser);
+    const user = useSelector(selectLoggedInUserToken);
 
     useEffect(() => {
         dispatch(signOutAsync())
