@@ -52,7 +52,6 @@ export default function ProductList() {
 
   const products = useSelector(selectAllProducts);
   const totalItems = useSelector(selectTotalItems);
-  console.log('totalItems', totalItems);
   const status = useSelector(selectProductListStatus);
   const brands = useSelector(selectBrands);
   const categories = useSelector(selectCategories);

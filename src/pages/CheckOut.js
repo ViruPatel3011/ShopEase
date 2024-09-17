@@ -28,7 +28,7 @@ function Checkout() {
     const cartItems = useSelector(selectItems);
     const currentOrder = useSelector(selectCurrentOrder);
     const totalAmount = cartItems.reduce((amount, item) => discountedPrice(item.product) * item.quantity + amount, 0)
-    const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0)
+    const totalItems = cartItems.reduce((total, item) => item.quantity + total, 0);
 
     const handleRemove = (e, id) => {
         dispatch(deleteCartAsync(id));
@@ -52,7 +52,7 @@ function Checkout() {
             dispatch(createOrderAsync(order));
         }
         else {
-            showToaster(ToasterType.Error,"Please select address")
+            showToaster(ToasterType.Error, "Please select address")
         }
     }
 
@@ -199,7 +199,7 @@ function Checkout() {
 
                                         <div className="sm:col-span-2">
                                             <label htmlFor="region" className="block text-sm font-medium leading-6 text-gray-900">
-                                                State / Province
+                                                Region / State
                                             </label>
                                             <div className="mt-2">
                                                 <input

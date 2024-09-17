@@ -3,15 +3,16 @@ import { Pagination } from '../../common/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     PencilIcon,
-    EyeIcon,
     ArrowUpIcon,
     ArrowDownIcon,
+    XMarkIcon
 } from '@heroicons/react/24/outline';
 import { fetchAllOrdersAsync, updateOrderAsync, selectOrders, selectTotalOrders } from '../../orders/orderSlice';
-import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constant';
+import { ITEMS_PER_PAGE} from '../../../app/constant';
 
 export default function AdminOrders() {
     const [page, setPage] = useState(1);
+    const [editIconVisible, setEditIconVisible] = useState(true);
     const dispatch = useDispatch();
     const orders = useSelector(selectOrders);
     const totalOrders = useSelector(selectTotalOrders);
@@ -20,16 +21,19 @@ export default function AdminOrders() {
 
     const handleEdit = (order) => {
         setEditableOrderId(order.id);
+        setEditIconVisible(false);
     };
 
-    const handleShow = (order) => {
-        console.log("Show");
+    const handleCloseEdit = (order) => {
+        setEditableOrderId(order.id);
+        setEditIconVisible(false);
     };
 
     const handleUpdate = (e, order) => {
         const updatedOrder = { ...order, status: e.target.value };
         dispatch(updateOrderAsync(updatedOrder));
         setEditableOrderId(-1);
+        setEditIconVisible(true);
     };
 
 
@@ -66,11 +70,11 @@ export default function AdminOrders() {
     return (
         <div className="overflow-x-auto">
             <div className="bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
-                <div className="w-full">
-                    <div className="bg-white shadow-md rounded my-6">
-                        <table className="min-w-max w-full table-auto">
+                <div className="w-full overflow-auto">
+                    <div className="rounded my-6">
+                        <table className="min-w-max w-full table-auto ">
                             <thead>
-                                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                <tr className="bg-gray-400 text-gray-600 uppercase text-sm leading-normal">
                                     <th
                                         onClick={(e) => handleSort({
                                             sort: 'id',
@@ -112,7 +116,7 @@ export default function AdminOrders() {
 
                             <tbody className="text-gray-600 text-sm font-light">
                                 {orders && orders?.map((order, index) => (
-                                    <tr className="border-b border-gray-200 hover:bg-gray-100" key={index}>
+                                    <tr className="border-b border-gray-200 hover:bg-red-50 even:bg-white-100 odd:bg-gray-200" key={index}>
                                         <td className="py-3 px-6 text-left whitespace-nowrap">
                                             <div className="flex items-center">
                                                 <div className="mr-2"></div>
@@ -125,37 +129,36 @@ export default function AdminOrders() {
                                                     <div className="mr-2">
                                                         <img
                                                             alt={item.product.title}
-                                                            className="w-6 h-6 rounded-full"
+                                                            className="w-10 h-10 rounded-full"
                                                             src={item.product.thumbnail}
                                                         />
                                                     </div>
-                                                    <span>
-                                                        {item.product.title} - #{item.quantity} - $
-                                                        {discountedPrice(item.product)}
+                                                    <span className='font-sans font-medium'>
+                                                        {item.product.title} - #{item.quantity}Q
                                                     </span>
                                                 </div>
                                             ))}
                                         </td>
                                         <td className="py-3 px-6 text-center">
-                                            <div className="flex items-center justify-center">
+                                            <div className="flex items-center justify-start  font-medium px-4">
                                                 ${order.totalAmount}
                                             </div>
                                         </td>
                                         <td className="py-3 px-6 text-center">
                                             <div className="">
                                                 <div>
-                                                    <strong>{order.selectAddress.name}</strong>,
+                                                    <strong className='whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] inline-block'>{order.selectAddress.name}</strong>,
                                                 </div>
-                                                <div>{order.selectAddress.street},</div>
-                                                <div>{order.selectAddress.city}, </div>
-                                                <div>{order.selectAddress.state}, </div>
+                                                <div className='whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] m-auto'>{order.selectAddress.street},</div>
+                                                <div className='whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] m-auto'>{order.selectAddress.city}, </div>
+                                                <div className='whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px] m-auto'>{order.selectAddress.region}, </div>
                                                 <div>{order.selectAddress.pinCode}, </div>
                                                 <div>{order.selectAddress.phone}, </div>
                                             </div>
                                         </td>
                                         <td className="py-3 px-6 text-center">
                                             {order.id === editableOrderId ? (
-                                                <select onChange={(e) => handleUpdate(e, order)}>
+                                                <select onChange={(e) => handleUpdate(e, order)} value={order.status}>
                                                     <option value="pending">Pending</option>
                                                     <option value="dispatched">Dispatched</option>
                                                     <option value="delivered">Delivered</option>
@@ -173,17 +176,18 @@ export default function AdminOrders() {
                                         </td>
                                         <td className="py-3 px-6 text-center">
                                             <div className="flex item-center justify-center">
-                                                <div className="w-6 mr-4 transform hover:text-purple-500 hover:scale-120">
-                                                    <EyeIcon
-                                                        className="w-6 h-6"
-                                                        onClick={(e) => handleShow(order)}
-                                                    ></EyeIcon>
-                                                </div>
                                                 <div className="w-6 mr-2 transform hover:text-purple-500 hover:scale-120 cursor-pointer">
-                                                    <PencilIcon
-                                                        className="w-6 h-6"
-                                                        onClick={(e) => handleEdit(order)}
-                                                    ></PencilIcon>
+                                                    {editIconVisible || order.id !== editableOrderId ? (
+                                                        <PencilIcon
+                                                            className="w-6 h-6 hover:text-purple-500 hover:scale-120"
+                                                            onClick={() => handleEdit(order)}
+                                                        />
+                                                    ) : (
+                                                        <XMarkIcon
+                                                            className="w-6 h-6 hover:text-purple-500 hover:scale-120"
+                                                            onClick={handleCloseEdit}
+                                                        />
+                                                    )}
                                                 </div>
                                             </div>
                                         </td>

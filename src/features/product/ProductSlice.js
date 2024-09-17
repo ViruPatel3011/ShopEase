@@ -56,7 +56,6 @@ export const fetchProductsByFiltersAsync = createAsyncThunk(
         queryString += `admin=true`
       }
       const response = await axiosInstance.get(`/products?${queryString}`);
-      console.log('response', response);
       if (response.data.success) {
         return response.data;
       } else {
@@ -169,7 +168,6 @@ export const productSlice = createSlice({
       })
       .addCase(fetchProductsByFiltersAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log('fetchProductsByFiltersAsyncPayload', action.payload.data.doc);
         state.products = action.payload.data.doc;
         state.totalItems = action.payload.data.totalCount;
       })
@@ -207,7 +205,6 @@ export const productSlice = createSlice({
       })
       .addCase(updateProductAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log('updateProductAsyncP', action.payload.data);
         const index = state.products.findIndex((product) =>
           product.id === action.payload.data.id);
         state.products[index] = action.payload.data;

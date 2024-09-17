@@ -33,7 +33,6 @@ export default function ForgotPasswod() {
                         className="space-y-6"
                         noValidate
                         onSubmit={handleSubmit((data) => {
-                            console.log("data:",data)
                             showToaster(ToasterType.Success,"Password recovery email sent successfully !!");
                             reset()
                         })}>

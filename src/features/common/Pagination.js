@@ -3,8 +3,6 @@ import { ITEMS_PER_PAGE } from "../../app/constant";
 
 export function Pagination({ page, setPage, handlePage, totalItems }) {
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-    console.log('totalPages' , totalPages);
-    console.log('totalItems', totalItems);
     const getPageNumbers = () => {
         let pages = [];
 
