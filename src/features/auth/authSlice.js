@@ -104,7 +104,6 @@ export const authSlice = createSlice({
             })
             .addCase(loginUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
-                console.log('loginUserAsync', action.payload);
                 state.loggedInUserToken = action.payload.data;
                 showToaster(ToasterType.Success, action.payload.message);
 

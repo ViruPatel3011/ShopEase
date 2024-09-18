@@ -140,7 +140,6 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUserToken);
   const userChecked = useSelector(selectUserChecked);
-  console.log('userChecked', userChecked);
 
   useEffect(() => {
     dispatch(checkAuthAsync())

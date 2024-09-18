@@ -27,8 +27,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
 import { discountedPrice, ITEMS_PER_PAGE } from '../../../app/constant';
 
-
-
 const sortOptions = [
     { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
     { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
@@ -113,7 +111,7 @@ function AdminProductList() {
                     <div>
                         <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen} handleFilter={handleFilter} filters={filters}></MobileFilter>
                         <main className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-10">
-                            <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+                            <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10">
                                 <h1 className="text-4xl font-bold tracking-tight text-gray-900">All Products</h1>
 
                                 <div className="flex items-center">

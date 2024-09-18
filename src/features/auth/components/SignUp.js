@@ -24,8 +24,8 @@ export default function SignUp() {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="Your Company"
-            src="/ecommerce.png"
-            className="mx-auto h-10 w-auto"
+            src="/shopeaseLogo.png"
+            className="mx-auto h-12 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Create a New account

@@ -39,7 +39,7 @@ const sortOptions = [
 
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function ProductList() {
@@ -111,90 +111,87 @@ export default function ProductList() {
 
   return (
     <div>
-      <div>
-        <div className="bg-white">
-          <div>
-            <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen} handleFilter={handleFilter} filters={filters}></MobileFilter>
-            <main className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-10">
-              <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                <h1 className="text-4xl font-bold tracking-tight text-gray-900">All Products</h1>
+      <div className="bg-white">
+        <div>
+          <MobileFilter mobileFiltersOpen={mobileFiltersOpen} setMobileFiltersOpen={setMobileFiltersOpen} handleFilter={handleFilter} filters={filters}></MobileFilter>
+          <main className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-10">
+            <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-10">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900">All Products</h1>
 
-                <div className="flex items-center">
-                  <Menu as="div" className="relative inline-block text-left">
-                    <div>
-                      <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                        Sort
-                        <ChevronDownIcon
-                          aria-hidden="true"
-                          className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                        />
-                      </MenuButton>
-                    </div>
-
-                    <MenuItems
-                      transition
-                      className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                    >
-                      <div className="py-1">
-                        {sortOptions.map((option) => (
-                          <MenuItem key={option.name}>
-                            <a
-                              href={option.href}
-                              onClick={(e) => handleSort(e, option)}
-                              className={classNames(
-                                option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                                'block px-4 py-2 text-sm data-[focus]:bg-gray-100',
-                              )}
-                            >
-                              {option.name}
-                            </a>
-                          </MenuItem>
-                        ))}
-                      </div>
-                    </MenuItems>
-                  </Menu>
-
-                  <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                    <span className="sr-only">View grid</span>
-                    <Squares2X2Icon aria-hidden="true" className="h-5 w-5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setMobileFiltersOpen(true)}
-                    className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
-                  >
-                    <span className="sr-only">Filters</span>
-                    <FunnelIcon aria-hidden="true" className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-
-              <section aria-labelledby="products-heading" className="pb-24 pt-6">
-                <h2 id="products-heading" className="sr-only">
-                  Products
-                </h2>
-
-                <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-                  <DesktopFilter filters={filters} handleFilter={handleFilter}></DesktopFilter>
-
-                  {/* Product grid */}
-                  <div className="lg:col-span-3">
-                    {/* Products Lists Page */}
-                    <ProductGrid products={products} status={status}></ProductGrid>
+              <div className="flex items-center">
+                <Menu as="div" className="relative inline-block text-left">
+                  <div>
+                    <MenuButton className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                      Sort
+                      <ChevronDownIcon
+                        aria-hidden="true"
+                        className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                      />
+                    </MenuButton>
                   </div>
-                  {/* Product Grid end  */}
+
+                  <MenuItems
+                    transition
+                    className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                  >
+                    <div className="py-1">
+                      {sortOptions.map((option) => (
+                        <MenuItem key={option.name}>
+                          <a
+                            href={option.href}
+                            onClick={(e) => handleSort(e, option)}
+                            className={classNames(
+                              option.current ? 'font-medium text-gray-900' : 'text-gray-500',
+                              'block px-4 py-2 text-sm data-[focus]:bg-gray-100',
+                            )}
+                          >
+                            {option.name}
+                          </a>
+                        </MenuItem>
+                      ))}
+                    </div>
+                  </MenuItems>
+                </Menu>
+
+                <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+                  <span className="sr-only">View grid</span>
+                  <Squares2X2Icon aria-hidden="true" className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMobileFiltersOpen(true)}
+                  className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                >
+                  <span className="sr-only">Filters</span>
+                  <FunnelIcon aria-hidden="true" className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            <section aria-labelledby="products-heading" className="pb-24 pt-6">
+              <h2 id="products-heading" className="sr-only">
+                Products
+              </h2>
+
+              <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+                <DesktopFilter filters={filters} handleFilter={handleFilter}></DesktopFilter>
+
+                {/* Product grid */}
+                <div className="lg:col-span-3">
+                  {/* Products Lists Page */}
+                  <ProductGrid products={products} status={status}></ProductGrid>
                 </div>
-              </section>
-              <Pagination handlePage={handlePage} page={page} setPage={setPage} totalItems={totalItems} ></Pagination>
-            </main>
-          </div>
+                {/* Product Grid end  */}
+              </div>
+            </section>
+            <Pagination handlePage={handlePage} page={page} setPage={setPage} totalItems={totalItems} ></Pagination>
+          </main>
         </div>
       </div>
     </div>
 
   );
 }
-
 
 function MobileFilter({ setMobileFiltersOpen, mobileFiltersOpen, handleFilter, filters }) {
   return (
@@ -329,7 +326,7 @@ function ProductGrid({ products, status }) {
                 visible={true}
               />
             ) : null}
-            {products && products?.map((product,index) => (
+            {products && products?.map((product, index) => (
               <Link to={`/product-detail/${product.id}`} key={index}>
                 <div className="group relative border-solid border-2 p-2 border-gray-200">
                   <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">

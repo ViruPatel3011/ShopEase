@@ -26,7 +26,7 @@ export function Cart() {
   return (
     <>
       <div>
-        <div className="bg-gray-200 mt-14  mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="bg-gray-200 mt-10  mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
             <h1 className="text-4xl font-bold my-4 tracking-tight text-gray-900">
               Cart
