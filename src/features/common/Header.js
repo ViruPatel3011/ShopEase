@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { ShoppingCartIcon } from '@heroicons/react/24/outline'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -18,7 +18,7 @@ function Header({ items, userNavigation, navigation }) {
                         src="/shopEase.png"
                         className="h-12 w-auto"
                     />
-                    <h1 className="text-4xl font-bold tracking-tight text-teal-900">ȘhøpÉåse</h1>
+                    <h1 className="text-4xl font-bold tracking-tight text-teal-900">Sʜᴏᴘᴇᴀsᴇ</h1>
                 </div>
 
                 {/* Second div - Cart and Profile (Visible only on md and above) */}

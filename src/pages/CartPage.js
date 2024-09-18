@@ -17,7 +17,7 @@ function CartPage() {
                             src="/shopEase.png"
                             className="h-12 w-auto"
                         />
-                        <h1 className="text-4xl font-bold tracking-tight text-teal-900">ȘhøpÉåse</h1>
+                        <h1 className="text-4xl font-bold tracking-tight text-teal-900">Sʜᴏᴘᴇᴀsᴇ</h1>
                     </div>
                 </div>
             </header>

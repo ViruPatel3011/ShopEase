@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserInfo, updateUserAsync } from '../userSlice';
+import { MapPinIcon } from '@heroicons/react/24/outline'
 import { useForm } from 'react-hook-form';
 
 export function UserProfile() {
@@ -54,23 +55,43 @@ export function UserProfile() {
     <>
       <div>
         <div className="mx-auto mt-8 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-            <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
-              Name:  {userInfo?.addresses[0]?.name ? userInfo?.addresses[0]?.name : "Guest User"}
-            </h1>
-            <h3 className="text-xl my-5 font-bold tracking-tight text-red-900">
-              Email address:{userInfo?.email}
-            </h3>
 
-            {userInfo?.role === 'admin' && (
-              <h3 className="text-xl my-5 font-bold tracking-tight text-red-900">
-                role : {userInfo?.role}
-              </h3>
-            )}
+          <div className="grid grid-cols-10 gap-4">
+
+            {/* User Image  */}
+
+            <div className="col-span-3 flex justify-center items-center py-4">
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                className="w-48 h-48 rounded-full object-cover"
+                alt="User Profile"
+              />
+            </div>
+
+            {/* User Details  */}
+            <div className="col-span-7 border-t border-gray-200 px-4 py-6 sm:px-6 py-4">
+              <div className="flex items-center space-x-6">
+                <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+                  {userInfo?.addresses[0]?.name ? userInfo?.addresses[0]?.name : "Guest User"}
+                </h1>
+                <p className="text-xl font-semibold tracking-tight text-gray-500 flex">
+                  <MapPinIcon className='w-6 h-6'></MapPinIcon>
+                  {userInfo?.addresses[0]?.city ? userInfo?.addresses[0]?.city : "Unknown City"}
+                </p>
+              </div>
+
+              {/* Second Line: User Role */}
+              {userInfo?.role && (
+                <h3 className="text-xl mt-4 font-bold tracking-tight text-red-900">
+                  Role: {userInfo.role}
+                </h3>
+              )}
+            </div>
+
           </div>
 
+          {/* Addresses section  */}
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-
             <button
               type="submit"
               onClick={e => {
@@ -275,7 +296,7 @@ export function UserProfile() {
 
               </div>
             </form> : null}
-            <p className="mt-0.5 text-sm text-gray-500">
+            <p className="mt-0.5 text-md text-gray-500">
               Your Addresses :
             </p>
             {userInfo?.addresses && userInfo?.addresses.map((address, index) => (
