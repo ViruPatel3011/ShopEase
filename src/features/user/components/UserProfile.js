@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 export function UserProfile() {
   const dispatch = useDispatch();
   const userInfo = useSelector(selectUserInfo);
+  console.log('userInfo' , userInfo);
   const [selectedEditIndex, setSelectedEditIndex] = useState(-1)
   const [showAddAddressForm, setShowAddAddressForm] = useState(false)
 
@@ -60,12 +61,12 @@ export function UserProfile() {
                 Name:  {userInfo?.addresses[0]?.name ? userInfo?.addresses[0]?.name : "Guest User"}
               </h1>
               <h3 className="text-xl my-5 font-bold tracking-tight text-red-900">
-                Email address:{userInfo.email}
+                Email address:{userInfo?.email}
               </h3>
 
-              {userInfo.role === 'admin' && (
+              {userInfo?.role === 'admin' && (
                 <h3 className="text-xl my-5 font-bold tracking-tight text-red-900">
-                  role : {userInfo.role}
+                  role : {userInfo?.role}
                 </h3>
               )}
             </div>
@@ -279,7 +280,7 @@ export function UserProfile() {
               <p className="mt-0.5 text-sm text-gray-500">
                 Your Addresses :
               </p>
-              {userInfo.addresses && userInfo.addresses.map((address, index) => (
+              {userInfo?.addresses && userInfo?.addresses.map((address, index) => (
                 <div className='mt-2' key={index}>
                   {selectedEditIndex === index ? <form className='bg-white px-5 mt-12 py-12'
                     noValidate

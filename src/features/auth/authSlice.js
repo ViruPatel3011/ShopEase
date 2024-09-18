@@ -7,7 +7,8 @@ import axiosInstance from '../../helpers/axiosInstance';
 const initialState = {
     loggedInUserToken: null, // This should only contain user identity ==> 'id'/'role'
     status: 'idle',
-    error: null
+    error: null,
+    userChecked: false
 
 };
 
@@ -31,11 +32,31 @@ export const createUserAsync = createAsyncThunk(
     }
 );
 
-export const checkUserAsync = createAsyncThunk(
+export const loginUserAsync = createAsyncThunk(
     'user/checkUser',
     async (loginInfo, thunkAPI) => {
         try {
             const response = await axiosInstance.post("/auth/login", loginInfo);
+            if (response.data.success) {
+                return response.data;
+            } else {
+                return thunkAPI.rejectWithValue(await response.data);
+            }
+        } catch (error) {
+            if (error.response) {
+                return thunkAPI.rejectWithValue(error.response.data);
+            } else {
+                return thunkAPI.rejectWithValue({ message: error.message });
+            }
+        }
+    }
+);
+
+export const checkAuthAsync = createAsyncThunk(
+    'user/checkAuth',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axiosInstance.get("/auth/check");
             if (response.data.success) {
                 return response.data;
             } else {
@@ -78,16 +99,17 @@ export const authSlice = createSlice({
                 showToaster(ToasterType.Success, action.payload.message);
 
             })
-            .addCase(checkUserAsync.pending, (state) => {
+            .addCase(loginUserAsync.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(checkUserAsync.fulfilled, (state, action) => {
+            .addCase(loginUserAsync.fulfilled, (state, action) => {
                 state.status = 'idle';
+                console.log('loginUserAsync', action.payload);
                 state.loggedInUserToken = action.payload.data;
                 showToaster(ToasterType.Success, action.payload.message);
 
             })
-            .addCase(checkUserAsync.rejected, (state, action) => {
+            .addCase(loginUserAsync.rejected, (state, action) => {
                 state.status = 'idle';
                 state.error = action.payload.message;
             })
@@ -99,12 +121,25 @@ export const authSlice = createSlice({
                 state.loggedInUserToken = null;
                 showToaster(ToasterType.Success, 'SignOut successfully');
             })
+            .addCase(checkAuthAsync.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(checkAuthAsync.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.loggedInUserToken = action.payload.data;
+                state.userChecked = true;
+            })
+            .addCase(checkAuthAsync.rejected, (state, action) => {
+                state.status = 'idle';
+                state.userChecked = true;
+            })
 
     },
 });
 
 export const selectLoggedInUserToken = (state) => state.auth.loggedInUserToken;
 export const selectError = (state) => state.auth.error;
+export const selectUserChecked = (state) => state.auth.userChecked;
 
 export const { increment } = authSlice.actions;
 

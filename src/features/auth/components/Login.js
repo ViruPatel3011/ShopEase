@@ -1,5 +1,5 @@
 import React from 'react';
-import { selectLoggedInUserToken, selectError, checkUserAsync } from "../authSlice";
+import { selectLoggedInUserToken, selectError, loginUserAsync } from "../authSlice";
 import { Link, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,7 +42,7 @@ export default function Login() {
             className="space-y-6"
             noValidate
             onSubmit={handleSubmit((data) => {
-              dispatch(checkUserAsync({ email: data.email, password: data.password }));
+              dispatch(loginUserAsync({ email: data.email, password: data.password }));
             })}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">

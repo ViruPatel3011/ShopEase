@@ -4,13 +4,14 @@ import axiosInstance from '../../helpers/axiosInstance';
 const initialState = {
   status: 'idle',
   userInfo: null, // this info will be used in case of detailed user info, while auth will 
-  // only be used for loggedInUser id etc checks
+  // only be used for loggedInUser id etc checks,
+  userOrders: [],
 
 }
 
 export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   'user/fetchLoggedInUserOrders',
-  async (_,thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const response = await axiosInstance.get(`/orders/own/`);
       if (response.data.success) {
@@ -83,8 +84,9 @@ export const userSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
+        console.log('fetchLoggedInUserOrdersAsync', action.payload);
         state.status = 'idle';
-        state.userInfo.orders = action.payload.data;
+        state.userOrders = action.payload.data;
       })
       .addCase(updateUserAsync.pending, (state) => {
         state.status = 'loading';
@@ -103,7 +105,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUserOrders = (state) => state.user.userInfo.orders;
+export const selectUserOrders = (state) => state.user.userOrders;
 export const selectUserOrdersStatus = (state) => state.user.status;
 export const selectUserInfo = (state) => state.user.userInfo;
 
