@@ -51,6 +51,7 @@ export default function Login() {
               <div className="mt-2">
                 <input
                   id="email"
+                  placeholder='enter your email'
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
@@ -81,6 +82,7 @@ export default function Login() {
               <div className="mt-2">
                 <input
                   id="password"
+                  placeholder='enter your password'
                   {...register('password', {
                     required: "Password is required",
                   })}

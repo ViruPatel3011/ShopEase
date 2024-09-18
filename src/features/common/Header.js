@@ -59,7 +59,7 @@ function Header({ items, userNavigation, navigation }) {
                                         <Link
                                             to={item.link}
                                             className={classNames(
-                                                active ? 'bg-gray-100' : '',
+                                                active ? 'bg-gray-200' : '',
                                                 'block px-4 py-2 text-sm text-gray-700'
                                             )}
                                         >

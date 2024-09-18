@@ -142,7 +142,7 @@ export default function ProductList() {
                             onClick={(e) => handleSort(e, option)}
                             className={classNames(
                               option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                              'block px-4 py-2 text-sm data-[focus]:bg-gray-100',
+                              'block px-4 py-2 text-sm data-[focus]:bg-gray-200',
                             )}
                           >
                             {option.name}

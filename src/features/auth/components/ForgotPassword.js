@@ -43,6 +43,7 @@ export default function ForgotPasswod() {
                             <div className="mt-2">
                                 <input
                                     id="email"
+                                    placeholder='enter your email'
                                     {...register('email', {
                                         required: 'Email is required',
                                         pattern: {

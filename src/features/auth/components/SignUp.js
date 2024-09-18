@@ -49,6 +49,7 @@ export default function SignUp() {
               <div className="mt-2">
                 <input
                   id="email"
+                  placeholder='enter your email'
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
@@ -76,6 +77,7 @@ export default function SignUp() {
               <div className="mt-2">
                 <input
                   id="password"
+                  placeholder='enter your password'
                   {...register('password', {
                     required: "Password is required",
                     pattern: {
@@ -100,11 +102,11 @@ export default function SignUp() {
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                   Confirm Password
                 </label>
-
               </div>
               <div className="mt-2">
                 <input
                   id="confirmPassword"
+                  placeholder='....'
                   {...register('confirmPassword', {
                     required: "Confirm password is required",
                     validate: (value, formValues) =>
