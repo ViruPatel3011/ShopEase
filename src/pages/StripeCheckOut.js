@@ -5,22 +5,25 @@ import { useSelector } from 'react-redux';
 import CheckoutForm from "./CheckoutForm";
 import "../Stripe.css";
 import { selectCurrentOrder } from "../features/orders/orderSlice";
+import { baseUrl } from "../app/constant";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
-const stripePromise = loadStripe("pk_test_51Q0bXuDsLIm1HpbYyOIalkjloBLEkdr4oslromYw5hv2OwuwTf8AKPPyzbKXCslUUCcRakUaolrpEw4coUftfB9n00ntlf6G3G");
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 export default function StripeCheckout() {
     const [clientSecret, setClientSecret] = useState("");
-    const currentOrder = useSelector(selectCurrentOrder)
+    const currentOrder = useSelector(selectCurrentOrder);
+    console.log('currentOrder', currentOrder);
+
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch("http://localhost:8080/create-payment-intent", {
+        fetch(`${baseUrl}/create-payment-intent`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ totalAmount: currentOrder?.totalAmount, orderId: currentOrder.id }),
+            body: JSON.stringify({ orderId: currentOrder.id, productId: 'prod_QsT1igD2dJDmio'}),
         })
             .then((res) => res.json())
             .then((data) => setClientSecret(data.clientSecret));
@@ -33,6 +36,8 @@ export default function StripeCheckout() {
         clientSecret,
         appearance,
     };
+
+    console.log('clientSecret', clientSecret);
 
     return (
         <div className="Stripe">
