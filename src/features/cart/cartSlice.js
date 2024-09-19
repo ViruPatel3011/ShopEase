@@ -161,8 +161,6 @@ export const cartSlice = createSlice({
         state.status = 'idle';
         const cartIndex = state.items.findIndex(item => item.id === action.payload.data.id)
         state.items.splice(cartIndex, 1);
-        showToaster(ToasterType.Success, action.payload.message);
-
       })
       .addCase(resetCartAsync.pending, (state) => {
         state.status = 'loading';

@@ -1,14 +1,18 @@
 import { useEffect } from "react";
-import { Link, useParams, Navigate } from "react-router-dom";
+import { Link, useParams, Navigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetCartAsync } from "../features/cart/cartSlice";
 import { resetOrder } from "../features/orders/orderSlice";
+import { ToasterType } from "../app/constant";
+import { showToaster } from "../utils/Toaster";
 
 
 function OrderSuccessPage() {
     const params = useParams();
     const dispatch = useDispatch();
-
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const paymentIntent = searchParams.get('payment_intent');
 
     useEffect(() => {
         //reset cart
@@ -16,7 +20,13 @@ function OrderSuccessPage() {
         //reset order
         dispatch(resetOrder());
 
-    }, [dispatch])
+        if (paymentIntent) {
+            showToaster(ToasterType.Success, 'Card payment was successful. Your order has been placed!');
+        } else {
+            showToaster(ToasterType.Success, 'Your order has been placed successfully!');
+        }
+
+    }, [dispatch, paymentIntent])
 
     return (
         <>

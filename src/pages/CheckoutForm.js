@@ -6,6 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useSelector } from 'react-redux';
 import { selectCurrentOrder } from "../features/orders/orderSlice";
+import { Link } from "react-router-dom";
 
 export default function CheckoutForm() {
     const stripe = useStripe();
@@ -62,6 +63,7 @@ export default function CheckoutForm() {
             confirmParams: {
                 // Make sure to change this to your payment completion page
                 return_url: `http://localhost:3000/order-success/${currentOrder.id}`,
+
             },
         });
 
@@ -70,6 +72,7 @@ export default function CheckoutForm() {
         // your `return_url`. For some payment methods like iDEAL, your customer will
         // be redirected to an intermediate site first to authorize the payment, then
         // redirected to the `return_url`.
+
         if (error.type === "card_error" || error.type === "validation_error") {
             setMessage(error.message);
         } else {
@@ -84,15 +87,32 @@ export default function CheckoutForm() {
     }
 
     return (
-        <form id="payment-form" onSubmit={handleSubmit}>
-            <PaymentElement id="payment-element" options={paymentElementOptions} />
-            <button disabled={isLoading || !stripe || !elements} id="submit">
-                <span id="button-text">
-                    {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-                </span>
-            </button>
-            {/* Show any error or success messages */}
-            {message && <div id="payment-message">{message}</div>}
-        </form>
+        <>
+            <form id="payment-form" onSubmit={handleSubmit}>
+                <PaymentElement id="payment-element" options={paymentElementOptions} />
+                <button disabled={isLoading || !stripe || !elements} id="submit">
+                    <span id="button-text">
+                        {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+                    </span>
+                </button>
+                {/* Show any error or success messages */}
+                {message && <div id="payment-message">{message}</div>}
+            </form>
+
+            <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                <p className="font-medium ">
+                    or{' '}
+                    <Link to='/'>
+                        <button
+                            type="button"
+                            className="font-medium text-indigo-600 hover:text-white"
+                        >
+                            Back to home
+                            <span aria-hidden="true"> &rarr;</span>
+                        </button>
+                    </Link>
+                </p>
+            </div>
+        </>
     );
 }
