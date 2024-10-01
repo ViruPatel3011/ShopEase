@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Pagination } from '../../common/Pagination';
+import { Pagination } from '../../Common/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     PencilIcon,
@@ -8,7 +8,7 @@ import {
     XMarkIcon
 } from '@heroicons/react/24/outline';
 import { fetchAllOrdersAsync, updateOrderAsync, selectOrders, selectTotalOrders } from '../../orders/orderSlice';
-import { ITEMS_PER_PAGE} from '../../../app/constant';
+import { ITEMS_PER_PAGE } from '../../../app/constant';
 
 export default function AdminOrders() {
     const [page, setPage] = useState(1);
@@ -29,8 +29,15 @@ export default function AdminOrders() {
         setEditIconVisible(false);
     };
 
-    const handleUpdate = (e, order) => {
+    const handleOrderStatusUpdate = (e, order) => {
         const updatedOrder = { ...order, status: e.target.value };
+        dispatch(updateOrderAsync(updatedOrder));
+        setEditableOrderId(-1);
+        setEditIconVisible(true);
+    };
+
+    const handleOrderPaymentStatusUpdate = (e, order) => {
+        const updatedOrder = { ...order, paymentStatus: e.target.value };
         dispatch(updateOrderAsync(updatedOrder));
         setEditableOrderId(-1);
         setEditIconVisible(true);
@@ -109,8 +116,9 @@ export default function AdminOrders() {
                                             ))}
                                     </th>
                                     <th className="py-3 px-6 text-center">Shipping Address</th>
-                                    <th className="py-3 px-6 text-center">Status</th>
-                                    <th className="py-3 px-6 text-center">Actions</th>
+                                    <th className="py-3 px-6 text-center">Order Status</th>
+                                    <th className="py-3 px-6 text-center">Payment Method</th>
+                                    <th className="py-3 px-6 text-center">Payment Status</th>
                                 </tr>
                             </thead>
 
@@ -156,9 +164,10 @@ export default function AdminOrders() {
                                                 <div>{order.selectAddress.phone}, </div>
                                             </div>
                                         </td>
+
                                         <td className="py-3 px-6 text-center">
                                             {order.id === editableOrderId ? (
-                                                <select onChange={(e) => handleUpdate(e, order)} value={order.status}>
+                                                <select onChange={(e) => handleOrderStatusUpdate(e, order)} value={order.status}>
                                                     <option value="pending">Pending</option>
                                                     <option value="dispatched">Dispatched</option>
                                                     <option value="delivered">Delivered</option>
@@ -174,6 +183,34 @@ export default function AdminOrders() {
                                                 </span>
                                             )}
                                         </td>
+
+                                        <td className="py-3 px-6 text-center">
+                                            <div className="flex items-center justify-center">
+                                                {order.paymentMethod}
+                                            </div>
+                                        </td>
+
+
+                                        <td className="py-3 px-6 text-center">
+                                            {order.id === editableOrderId ? (
+                                                <select onChange={(e) => handleOrderPaymentStatusUpdate(e, order)} value={order.paymentStatus
+                                                }>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="dispatched">Received</option>
+
+                                                </select>
+                                            ) : (
+                                                <span
+                                                    className={`${chooseColor(
+                                                        order.paymentStatus
+                                                    )} py-1 px-3 rounded-full text-xs`}
+                                                >
+                                                    {order.paymentStatus
+                                                    }
+                                                </span>
+                                            )}
+                                        </td>
+
                                         <td className="py-3 px-6 text-center">
                                             <div className="flex item-center justify-center">
                                                 <div className="w-6 mr-2 transform hover:text-purple-500 hover:scale-120 cursor-pointer">

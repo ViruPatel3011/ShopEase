@@ -15,7 +15,6 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 export default function StripeCheckout() {
     const [clientSecret, setClientSecret] = useState("");
     const currentOrder = useSelector(selectCurrentOrder);
-    console.log('currentOrder', currentOrder);
 
 
     useEffect(() => {
@@ -36,8 +35,6 @@ export default function StripeCheckout() {
         clientSecret,
         appearance,
     };
-
-    console.log('clientSecret', clientSecret);
 
     return (
         <div className="Stripe">

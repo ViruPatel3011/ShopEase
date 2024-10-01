@@ -34,8 +34,9 @@ export const fetchProductByIdAsync = createAsyncThunk(
 
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   'product/fetchProductsByFilters',
-  async ({ filter, sort, pagination, admin, thunkAPI }) => {
+  async ({ filter, sort, pagination, searchQuery, admin }, thunkAPI) => {
     try {
+      console.log("searchQuery:", searchQuery);
       let queryString = '';
       for (let key in filter) {
         const categoryValues = filter[key];
@@ -52,9 +53,14 @@ export const fetchProductsByFiltersAsync = createAsyncThunk(
         queryString += `${key}=${pagination[key]}&`
       }
 
+      if (searchQuery) {
+        queryString += `q=${searchQuery}&`; // Assuming the backend uses 'q' for search queries
+      }
+
       if (admin) {
         queryString += `admin=true`
       }
+
       const response = await axiosInstance.get(`/products?${queryString}`);
       if (response.data.success) {
         return response.data;

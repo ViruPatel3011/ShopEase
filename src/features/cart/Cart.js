@@ -4,7 +4,7 @@ import { selectItems, updateCartAsync, deleteCartAsync, selectCartStatus } from 
 import { useDispatch, useSelector } from 'react-redux';
 import { discountedPrice } from '../../app/constant';
 import { Grid } from 'react-loader-spinner';
-import Modal from '../common/Modal';
+import Modal from '../Common/Modal';
 
 
 export function Cart() {

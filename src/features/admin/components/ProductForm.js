@@ -10,7 +10,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Modal from '../../common/Modal';
+import Modal from '../../Common/Modal';
 
 export default function ProductForm() {
   const [openModal, setOpenModal] = useState(null);

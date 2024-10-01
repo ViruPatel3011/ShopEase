@@ -1,11 +1,12 @@
 import React from 'react'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectItems } from "../cart/cartSlice";
 import { selectUserInfo } from '../user/userSlice';
-import Header from '../common/Header';
+import Header from '../Common/Header';
+import { fetchProductsByFiltersAsync } from '../product/ProductSlice';
 
 
 const navigation = [
@@ -25,7 +26,18 @@ function classNames(...classes) {
 
 function Navbar({ children }) {
     const items = useSelector(selectItems);
+    const dispatch = useDispatch();
     const userInfo = useSelector(selectUserInfo);
+    const location = useLocation();
+
+    const handleSearch = (e) => {
+        const query = e.target.value;
+        console.log('query', query);
+        dispatch(fetchProductsByFiltersAsync({ filter: {}, sort: {}, pagination: {}, searchQuery: query }));
+
+    }
+
+    const showSearch = location.pathname === '/' || location.pathname === '/admin';
 
     return (
         <>
@@ -62,6 +74,32 @@ function Navbar({ children }) {
                                     </div>
                                 </div>
                             </div>
+
+                            {showSearch && (
+                                <div className="relative">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                        />
+                                    </svg>
+                                    <input
+                                        onChange={handleSearch}
+                                        type="text"
+                                        placeholder="Search"
+                                        className="w-full py-3 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-indigo-600"
+                                    />
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </Disclosure>

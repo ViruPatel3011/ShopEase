@@ -398,6 +398,11 @@ function ProductGrid({ products }) {
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+                {products.length === 0 ? (
+                    <div className="text-center text-gray-500 mt-6  gap-x-6 gap-y-10 xl:gap-x-8 font-bold text-lg">
+                        <p>Oops! Our store is temporarily out of products. New items are on the way! 🚚✨</p>
+                    </div>
+                ) : (
                 <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                     {products.map((product, index) => (
                         <div key={index}>
@@ -456,6 +461,7 @@ function ProductGrid({ products }) {
                         </div>
                     ))}
                 </div>
+                )}
             </div>
         </div>
     );

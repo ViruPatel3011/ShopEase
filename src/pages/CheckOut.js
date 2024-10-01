@@ -55,7 +55,6 @@ function Checkout() {
             showToaster(ToasterType.Error, "Please select address")
         }
     }
-    console.log('currentOrder' , currentOrder);
 
     return (
         <>
