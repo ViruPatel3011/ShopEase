@@ -1,32 +1,32 @@
 import React, { useEffect } from 'react';
-import Home from './pages/Home';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
+import Home from './Pages/ProductPage/Home';
+import LoginPage from './Pages/AuthPage/LoginPage';
+import SignUpPage from './Pages/AuthPage/SignUpPage';
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import CartPage from './pages/CartPage';
-import Checkout from './pages/CheckOut';
-import ProductDetailPage from './pages/ProductDetailPage';
-import Protected from './features/auth/components/Protected';
-import ProtectedAdmin from './features/auth/components/ProtectedAdmin';
+import CartPage from './Pages/CartPage/CartPage';
+import Checkout from './Pages/CheckOutPage/CheckOut';
+import ProductDetailPage from './Pages/ProductPage/ProductDetailPage';
+import Protected from './Components/Auth/ProtectedRoute/Protected';
+import ProtectedAdmin from './Components/Auth/ProtectedRoute/ProtectedAdmin';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
-import { checkAuthAsync, selectLoggedInUserToken, selectUserChecked } from './features/auth/authSlice';
-import PageNotFound from './pages/404';
-import OrderSuccessPage from './pages/OrderSuccessPage';
-import UserOrderPage from './pages/UserOrderPage';
-import UserProfilePage from './pages/UserProfilePage';
-import { fetchLoggedInUserAsync } from './features/user/userSlice';
-import LogOut from './features/auth/components/LogOut';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import AdminProductDetailPage from './pages/AdminProductDetailPage';
-import AdminHome from './pages/AdminHome';
-import AdminProductFormPage from './pages/AdminProductFormPage';
-import AdminOrdersPage from './pages/AdminOrdersPage';
-import StripeCheckOut from './pages/StripeCheckOut';
+import { fetchItemsByUserIdAsync } from './Redux/Slice/Cart/cartSlice';
+import { checkAuthAsync, selectLoggedInUserToken, selectUserChecked } from './Redux/Slice/Auth/authSlice';
+import PageNotFound from './Pages/NotFoundPage/404';
+import OrderSuccessPage from './Pages/OrderSuccessPage/OrderSuccessPage';
+import UserOrderPage from './Pages/UserPage/UserOrderPage';
+import UserProfilePage from './Pages/UserPage/UserProfilePage';
+import { fetchLoggedInUserAsync } from './Redux/Slice/User/userSlice';
+import LogOut from './Components/Auth/LogOut';
+import ForgotPasswordPage from './Pages/AuthPage/ForgotPasswordPage';
+import AdminProductDetailPage from './Pages/AdminPage/AdminProductDetailPage';
+import AdminHome from './Pages/AdminPage/AdminHome';
+import AdminProductFormPage from './Pages/AdminPage/AdminProductFormPage';
+import AdminOrdersPage from './Pages/AdminPage/AdminOrdersPage';
+import StripeCheckOut from './Pages/PaymentPage/StripeCheckOut';
 
 const router = createBrowserRouter([
   {

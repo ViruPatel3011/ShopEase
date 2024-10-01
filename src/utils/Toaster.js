@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { ToasterType } from "../app/constant";
+import { ToasterType } from "../Utils/Constant";
 
 export function showToaster(toaster, message) {
     switch (toaster) {
